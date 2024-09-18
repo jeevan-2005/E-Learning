@@ -5,6 +5,7 @@ import cors from "cors";
 import errorMiddleware from "./middlewares/error.middleware";
 import userRouter from "./routes/user.routes";
 import courseRouter from "./routes/course.routes";
+import orderRouter from "./routes/order.route";
 
 export const app = express();
 
@@ -22,7 +23,10 @@ app.use(
   })
 );
 
-
+// user Routes
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/course", courseRouter);
+app.use("/api/v1/order", orderRouter);
 
 // health-check test api...
 app.get("/health-check", (req: Request, res: Response) => {
