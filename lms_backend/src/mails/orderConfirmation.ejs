@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Confirmation</title>
+    <style>
+      #container {
+        max-width: 800px;
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+        background-color: #0070f3;
+        border-radius: 4px;
+        color: #ffffff;
+        padding: 20px;
+      }
+      .message {
+        padding: 24px;
+        font-size: 15px;
+      }
+      .aboutCourse {
+        background-color: #ffffff;
+        color: #000000;
+        border-radius: 11px;
+        padding: 24px;
+        font-size: 15px;
+        margin-bottom: 25px;
+      }
+      .aboutCourse p {
+        margin-top: 0;
+        text-align: center;
+      }
+
+      .aboutCourse table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .aboutCourse th,
+      .aboutCourse td {
+        border: 1px solid #000000;
+        padding: 8px;
+        text-align: center;
+      }
+
+      .aboutCourse th {
+        background-color: #ffffff;
+      }
+
+      .aboutCourse td {
+        background-color: #ffffff;
+      }
+
+      .message h1 {
+        font-size: 24px;
+        margin-top: 0;
+      }
+      .footer {
+        text-align: center;
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+
+      .footer a {
+        color: #000000;
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      .footer p {
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div class="message">
+        <h2>Hello <%= order.userName %></h2>
+        <p>
+          Your order has been confirmed. Your course <b><%= order.title %></b> is now
+          available. You can access it from your dashboard.
+        </p>
+      </div>
+      <div class="aboutCourse">
+        <p>Here's few information about your course you have ordered.</p>
+        <p>Date: <%= order.date %></p>
+        <table style="width: 100%; border: 1px solid black">
+          <tr>
+            <th>Course Id</th>
+            <th>Course Name</th>
+            <th>Price</th>
+          </tr>
+          <tr>
+            <td><%= order._id %></td>
+            <td><%= order.courseName %></td>
+            <td>$ <%= order.price %></td>
+          </tr>
+        </table>
+        <!-- adding total price as table -->
+        <table style="width: 100%; border: 1px solid black">
+          <tr>
+            <th>Total Price</th>
+            <td>$ <%= order.price %></td>
+          </tr>
+        </table>
+      </div>
+      <div class="footer">
+        <p>If you have any questions, please contact us at <a href="mailto:jeevanchoudhary2005@gmail.com">support@e-learning.com</a></p>
+        <p>&copy; 2023 E-Learning. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>
