@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import path from "path";
 import ejs from "ejs";
 import sendEmail from "../utils/mailSender";
+import NotificationModel from "../models/notification.model";
 
 // create course
 const uploadCourse = catchAsyncError(
@@ -205,6 +206,13 @@ const addQuestion = catchAsyncError(
       };
       // add this newQuestion to courseContent.questions
       courseContent.questions.push(newQuestion);
+
+      await NotificationModel.create({
+        userId: req?.user?._id,
+        title: "New Question Received",
+        message: `${req?.user?.name} has asked a question in ${courseContent?.title} in the course:${course?.name}`,
+      })
+
       await course?.save();
 
       res.status(200).json({
@@ -263,7 +271,11 @@ const addAnswer = catchAsyncError(
       await course?.save();
 
       if (req?.user?._id?.toString() === question?.user?._id?.toString()) {
-        // send notification to admin that one question has been added...
+        await NotificationModel.create({
+          user: req.user?._id,
+          title: "New Question Reply Received",
+          message: `You have new question reply in ${courseContent?.title} in the course:${course?.name}`,
+        })
       } else {
         // send email to the user that answer has been added by admin to question asked by the user...
         const data = {
