@@ -101,7 +101,7 @@ const getSingleCourseUnpaid = catchAsyncError(
         "-courseData.videoUrl -courseData.links -courseData.suggestions -courseData.questions"
       );
 
-      await redis.set(courseId, JSON.stringify(course));
+      await redis.set(courseId, JSON.stringify(course), "EX", 7 * 60 * 60 * 24); // 7 days expires
 
       res.status(201).json({
         success: true,
