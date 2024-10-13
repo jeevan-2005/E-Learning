@@ -7,6 +7,8 @@ import userRouter from "./routes/user.routes";
 import courseRouter from "./routes/course.routes";
 import orderRouter from "./routes/order.route";
 import notificationRouter from "./routes/notification.route";
+import analyticsRouter from "./routes/analytics.routes";
+import layoutRouter from "./routes/layout.route";
 
 export const app = express();
 
@@ -29,6 +31,8 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/course", courseRouter);
 app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/notification", notificationRouter);
+app.use("/api/v1/analytics", analyticsRouter);
+app.use("/api/v1/layout", layoutRouter);
 
 // health-check test api...
 app.get("/health-check", (req: Request, res: Response) => {
