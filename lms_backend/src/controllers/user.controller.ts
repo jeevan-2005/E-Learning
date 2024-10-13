@@ -191,6 +191,10 @@ const updateAccessToken = catchAsyncError(
     try {
       const refresh_token = req.cookies.refresh_token as string;
 
+      if (!refresh_token) {
+        return next(new ErrorHandler("Could not find refresh token", 400));
+      }
+
       const decoded = jwt.verify(
         refresh_token,
         process.env.REFRESH_TOKEN_SECRET as string
@@ -215,7 +219,7 @@ const updateAccessToken = catchAsyncError(
       const refreshToken = jwt.sign(
         { id: user._id },
         process.env.REFRESH_TOKEN_SECRET as Secret,
-        { expiresIn: "5m" }
+        { expiresIn: "3d" }
       );
 
       req.user = user; // but why?
