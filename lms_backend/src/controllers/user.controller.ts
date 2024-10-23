@@ -207,7 +207,9 @@ const updateAccessToken = catchAsyncError(
       const session = await redis.get(decoded.id as string);
 
       if (!session) {
-        return next(new ErrorHandler("Please login to access this resource!", 400));
+        return next(
+          new ErrorHandler("Please login to access this resource!", 400)
+        );
       }
 
       const user = JSON.parse(session);
@@ -231,7 +233,7 @@ const updateAccessToken = catchAsyncError(
         user._id as string,
         JSON.stringify(user),
         "EX",
-        7 * 24 * 60 * 60  // expires in 7 days
+        7 * 24 * 60 * 60 // expires in 7 days
       );
 
       res.status(200).json({
@@ -268,10 +270,52 @@ const socialAuth = catchAsyncError(
     try {
       const { name, email, avatar } = req.body as ISocialAuthBody;
       const user = await UserModel.findOne({ email: email });
+
       if (!user) {
-        const newUser = await UserModel.create({ name, email, avatar });
+        let newAvatar = {};
+        if (avatar) {
+          const myCloudImage = await cloudinary.v2.uploader.upload(avatar, {
+            folder: "avatars",
+            width: 150,
+          });
+
+          newAvatar = {
+            public_id: myCloudImage.public_id,
+            url: myCloudImage.secure_url,
+          };
+        }
+        const newUser = await UserModel.create({
+          name,
+          email,
+          avatar: newAvatar,
+        });
         await sendToken(newUser, res, 200);
       } else {
+        if (avatar && user) {
+          if (user?.avatar?.public_id) {
+            await cloudinary.v2.uploader.destroy(user?.avatar?.public_id);
+
+            const myCloudImage = await cloudinary.v2.uploader.upload(avatar, {
+              folder: "avatars",
+              width: 150,
+            });
+            user.avatar = {
+              public_id: myCloudImage.public_id,
+              url: myCloudImage.secure_url,
+            };
+          } else {
+            // for social auth we dont get public_id.
+            const myCloudImage = await cloudinary.v2.uploader.upload(avatar, {
+              folder: "avatars",
+              width: 150,
+            });
+            user.avatar = {
+              public_id: myCloudImage.public_id,
+              url: myCloudImage.secure_url,
+            };
+          }
+        }
+        await user.save();
         await sendToken(user, res, 200);
       }
     } catch (error: any) {
@@ -289,17 +333,11 @@ interface IUpdateUserBody {
 const updateUserInfo = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { name, email } = req.body as IUpdateUserBody;
+      const { name } = req.body as IUpdateUserBody;
       const id = req.user?._id;
 
       const user = await UserModel.findById(id);
-      if (email && user) {
-        const isEmailExist = await UserModel.findOne({ email });
-        if (isEmailExist) {
-          return next(new ErrorHandler("Email already exists", 400));
-        }
-        user.email = email;
-      }
+      
       if (name && user) {
         user.name = name;
       }
