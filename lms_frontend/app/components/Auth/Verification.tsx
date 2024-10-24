@@ -1,4 +1,4 @@
-import { useActivationMutation } from "@/redux/features/auth/authApi";
+import { useActivationMutation } from "../../../redux/features/auth/authApi";
 import { style } from "../../styles/styles";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
