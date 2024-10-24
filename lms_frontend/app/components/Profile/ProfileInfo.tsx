@@ -6,8 +6,8 @@ import { style } from "../../styles/styles";
 import {
   useEditProfileMutation,
   useUpdateAvatarMutation,
-} from "@/redux/features/user/userApi";
-import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+} from "../../../redux/features/user/userApi";
+import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
 import { FaSpinner } from "react-icons/fa6";
 import toast from "react-hot-toast";
 
