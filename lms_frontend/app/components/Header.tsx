@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import Image from "next/image";
 import avatar from "../../public/assests/avatar.webp";
 import { useSession } from "next-auth/react";
-import { useSocialAuthMutation } from "@/redux/features/auth/authApi";
+import { useSocialAuthMutation } from "../../redux/features/auth/authApi";
 import toast from "react-hot-toast";
 
 type Props = {
