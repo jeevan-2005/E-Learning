@@ -236,10 +236,7 @@ const updateAccessToken = catchAsyncError(
         7 * 24 * 60 * 60 // expires in 7 days
       );
 
-      res.status(200).json({
-        success: true,
-        accessToken,
-      });
+      next()
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
