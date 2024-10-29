@@ -48,7 +48,7 @@ const CreateCourse: FC<Props> = (props) => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Course created successfully");
-      redirect("/admin/all-courses");
+      redirect("/admin/courses");
     }
     if (error && "data" in error) {
       const errorData = error.data as { message?: string };
