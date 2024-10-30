@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import Heading from "../utils/Heading";
 import AdminProtected from "../hooks/adminProtected";
 import AdminSidebar from "../components/Admin/sidebar/AdminSidebar";
-import DashboardHero from "../components/Admin/DashboardHero"
+import DashboardHero from "../components/Admin/DashboardHero";
 
 type Props = {};
 
@@ -18,7 +18,7 @@ const page: FC<Props> = (props) => {
         />
         <div className="w-full flex h-screen">
           <div className="w-[20%]">
-            <AdminSidebar />
+            <AdminSidebar selectedNav="Dashboard" />
           </div>
           <div className="w-[80%]">
             <DashboardHero />
