@@ -236,7 +236,7 @@ const updateAccessToken = catchAsyncError(
         7 * 24 * 60 * 60 // expires in 7 days
       );
 
-      next()
+      next();
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
@@ -334,7 +334,7 @@ const updateUserInfo = catchAsyncError(
       const id = req.user?._id;
 
       const user = await UserModel.findById(id);
-      
+
       if (name && user) {
         user.name = name;
       }
@@ -463,9 +463,18 @@ const getAllUsers = catchAsyncError(
 const updateUserRole = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { id, role } = req.body;
-      console.log(1);
-      updateUserRoleService(res, id, role);
+      const { email, role } = req.body;
+      if (!email || !role) {
+        return next(new ErrorHandler("Please enter email and role", 400));
+      }
+      const user = await UserModel.findOne({ email });
+      if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+      }
+      if (user && user._id) {
+        const id = user._id.toString() as string;
+        updateUserRoleService(res, id, role);
+      }
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
