@@ -203,7 +203,9 @@ const CourseContent: FC<Props> = ({
                   <div className="flex items-center">
                     <AiOutlineDelete
                       className={`dark:text-white text-black text-[20px] mr-2 ${
-                        courseContentData.length > 1 ? "cursor-pointer" : "cursor-not-allowed"
+                        courseContentData.length > 1
+                          ? "cursor-pointer"
+                          : "cursor-not-allowed"
                       }`}
                       onClick={() => {
                         if (courseContentData.length > 1) {
@@ -240,11 +242,12 @@ const CourseContent: FC<Props> = ({
                         value={item.title}
                         required
                         onChange={(e) => {
-                          const updatedCourseContentData = [
-                            ...courseContentData,
-                          ];
-                          updatedCourseContentData[index].title =
-                            e.target.value;
+                          const updatedCourseContentData =
+                            courseContentData.map((item: any, i: number) =>
+                              i === index
+                                ? { ...item, title: e.target.value }
+                                : item
+                            );
                           setCourseContentData(updatedCourseContentData);
                         }}
                       />
@@ -261,11 +264,12 @@ const CourseContent: FC<Props> = ({
                         required
                         value={item.videoUrl}
                         onChange={(e) => {
-                          const updatedCourseContentData = [
-                            ...courseContentData,
-                          ];
-                          updatedCourseContentData[index].videoUrl =
-                            e.target.value;
+                          const updatedCourseContentData =
+                            courseContentData.map((item: any, i: number) =>
+                              i === index
+                                ? { ...item, videoUrl: e.target.value }
+                                : item
+                            );
                           setCourseContentData(updatedCourseContentData);
                         }}
                       />
@@ -283,11 +287,12 @@ const CourseContent: FC<Props> = ({
                         className={`${style.input} !mt-[5px] py-2 !h-min`}
                         value={item.description}
                         onChange={(e) => {
-                          const updatedCourseContentData = [
-                            ...courseContentData,
-                          ];
-                          updatedCourseContentData[index].description =
-                            e.target.value;
+                          const updatedCourseContentData =
+                            courseContentData.map((item: any, i: number) =>
+                              i === index
+                                ? { ...item, description: e.target.value }
+                                : item
+                            );
                           setCourseContentData(updatedCourseContentData);
                         }}
                       />
@@ -319,12 +324,20 @@ const CourseContent: FC<Props> = ({
                           value={link.title}
                           required
                           onChange={(e) => {
-                            const updatedCourseContentData = [
-                              ...courseContentData,
-                            ];
-                            updatedCourseContentData[index].links[
-                              linkIndex
-                            ].title = e.target.value;
+                            const updatedCourseContentData =
+                              courseContentData.map((item: any, i: number) =>
+                                i === index
+                                  ? {
+                                      ...item,
+                                      links: item.links.map(
+                                        (link: any, j: number) =>
+                                          j === linkIndex
+                                            ? { ...link, title: e.target.value }
+                                            : link
+                                      ),
+                                    }
+                                  : item
+                              );
                             setCourseContentData(updatedCourseContentData);
                           }}
                         />
@@ -335,12 +348,20 @@ const CourseContent: FC<Props> = ({
                           value={link.url}
                           required
                           onChange={(e) => {
-                            const updatedCourseContentData = [
-                              ...courseContentData,
-                            ];
-                            updatedCourseContentData[index].links[
-                              linkIndex
-                            ].url = e.target.value;
+                            const updatedCourseContentData =
+                              courseContentData.map((item: any, i: number) =>
+                                i === index
+                                  ? {
+                                      ...item,
+                                      links: item.links.map(
+                                        (link: any, j: number) =>
+                                          j === linkIndex
+                                            ? { ...link, url: e.target.value }
+                                            : link
+                                      ),
+                                    }
+                                  : item
+                              );
                             setCourseContentData(updatedCourseContentData);
                           }}
                         />
