@@ -35,29 +35,44 @@ const uploadCourse = catchAsyncError(
   }
 );
 
+interface Thumbnail {
+  public_id: string;
+  url: string;
+}
+
 // edit course
 const editCourse = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = req.body;
-      const thumbnail = data.thumbnail;
+      const thumbnail = data?.thumbnail;
       const courseId = req.params.id;
       const course = await CourseModel.findById(courseId);
+      if (thumbnail) {
+        if (course?.thumbnail && (course?.thumbnail as Thumbnail)?.public_id) {
+          await cloudinary.v2.uploader.destroy(
+            (course.thumbnail as any).public_id
+          );
+          const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
+            folder: "courses",
+          });
 
-      if (course?.thumbnail && thumbnail) {
-        await cloudinary.v2.uploader.destroy(
-          (course.thumbnail as any).public_id
-        );
-        const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
-          folder: "courses",
-        });
+          data.thumbnail = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          };
+        } else {
+          const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
+            folder: "courses",
+          });
 
-        data.thumbnail = {
-          public_id: myCloud.public_id,
-          url: myCloud.secure_url,
-        };
+          data.thumbnail = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          };
+        }
       }
-
+      console.log(1);
       const updatedCourse = await CourseModel.findByIdAndUpdate(
         courseId,
         {
