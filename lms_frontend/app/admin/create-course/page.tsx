@@ -7,7 +7,7 @@ import CreateCourse from "../../components/Admin/course/CreateCourse";
 
 type Props = {};
 
-const page: FC<Props> = (props) => {
+const Page: FC<Props> = (props) => {
   return (
     <div>
       <Heading
@@ -17,7 +17,7 @@ const page: FC<Props> = (props) => {
       />
       <div className="w-full flex min-h-screen">
         <div className="w-[20%]">
-          <AdminSidebar />
+          <AdminSidebar selectedNav="Create Course" />
         </div>
         <div className="w-[80%]">
           <DashboardHero />
@@ -28,4 +28,4 @@ const page: FC<Props> = (props) => {
   );
 };
 
-export default page;
+export default Page;
