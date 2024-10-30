@@ -19,7 +19,7 @@ const Page: FC<Props> = (props) => {
         />
         <div className="w-full flex h-screen">
           <div className="w-[20%]">
-            <AdminSidebar />
+            <AdminSidebar selectedNav="Live Courses" />
           </div>
           <div className="w-[80%]">
             <DashboardHero />
