@@ -47,9 +47,13 @@ const Item: FC<ItemProps> = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-const AdminSidebar = () => {
+type Props= {
+  selectedNav: string;
+}
+
+const AdminSidebar:FC<Props> = ({selectedNav}) => {
   const { user } = useSelector((state: any) => state.auth);
-  const [selected, setSelected] = useState("Dashboard");
+  const [selected, setSelected] = useState(selectedNav);
   const [mounted, setMounted] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { theme, setTheme } = useTheme();
