@@ -14,6 +14,24 @@
   }
 }
 
+::-webkit-scrollbar-track {
+  background-color: #3b6d932d;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #1783dba9;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #1783db;
+  cursor: pointer;
+}
+
 input::-webkit-inner-spin-button,
 input::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -54,27 +72,27 @@ body {
   }
 }
 
-.shake{
+.shake {
   animation: shake 0.5s ease-in-out;
 }
 
 @keyframes shake {
-  0%{
+  0% {
     transform: translateX(0);
   }
-  20%{
+  20% {
     transform: translateX(-2px);
   }
-  40%{
+  40% {
     transform: translateX(2px);
   }
-  60%{
+  60% {
     transform: translateX(-2px);
   }
-  80%{
+  80% {
     transform: translateX(2px);
   }
-  100%{
+  100% {
     transform: translateX(0);
   }
 }
