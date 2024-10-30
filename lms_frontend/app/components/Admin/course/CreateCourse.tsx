@@ -142,6 +142,7 @@ const CreateCourse: FC<Props> = (props) => {
             handleCourseCreate={handleCourseCreate}
             active={active}
             setActive={setActive}
+            isEdit={false}
           />
         )}
       </div>
