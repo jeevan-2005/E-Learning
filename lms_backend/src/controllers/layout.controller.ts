@@ -1,7 +1,7 @@
 import catchAsyncError from "../middlewares/catchAsyncError.middleware";
 import ErrorHandler from "../utils/ErrorHandler";
 import { Request, Response, NextFunction } from "express";
-import cloudinary from "cloudinary";
+import cloudinary, { UploadApiResponse } from "cloudinary";
 import { LayoutModel } from "../models/layout.model";
 
 const createLayout = catchAsyncError(
@@ -20,7 +20,7 @@ const createLayout = catchAsyncError(
       }
 
       if (type == "Banner") {
-        const { image, title, subtitle } = req.body;
+        const { image, title, subTitle } = req.body;
         const myCloud = await cloudinary.v2.uploader.upload(image, {
           folder: "layout",
         });
@@ -31,7 +31,7 @@ const createLayout = catchAsyncError(
             url: myCloud.secure_url,
           },
           title,
-          subtitle,
+          subTitle,
         };
         await LayoutModel.create({
           type,
@@ -81,22 +81,25 @@ const editLayout = catchAsyncError(
       }
 
       if (type == "Banner") {
-        await cloudinary.v2.uploader.destroy(
-          isTypeExists.banner.image.public_id
-        );
-        const { image, title, subtitle } = req.body;
-        const myCloud = await cloudinary.v2.uploader.upload(image, {
-          folder: "layout",
-        });
+        const { image, title, subTitle } = req.body;
+        // console.log(image);
+        const imageData = image.startsWith("https://res.cloudinary.com")
+          ? isTypeExists.banner.image
+          : await cloudinary.v2.uploader.upload(image, {
+              folder: "layout",
+            });
 
         const banner = {
           image: {
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url,
+            public_id: imageData.public_id,
+            url: image.startsWith("https://res.cloudinary.com")
+              ? imageData.url
+              : (imageData as UploadApiResponse).secure_url,
           },
           title,
-          subtitle,
+          subTitle,
         };
+
         await LayoutModel.findByIdAndUpdate(isTypeExists._id, {
           type,
           banner,
@@ -132,7 +135,7 @@ const editLayout = catchAsyncError(
 const getLayoutByType = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { type } = req.body;
+      const { type } = req.params;
       if (!type) {
         return next(new ErrorHandler("Please provide type", 400));
       }
@@ -145,7 +148,6 @@ const getLayoutByType = catchAsyncError(
         success: true,
         layout,
       });
-
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
