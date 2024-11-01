@@ -1,5 +1,7 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { style } from "../../../styles/styles";
+import { useGetHeroDataQuery } from "../../../../redux/features/layout/layoutApi";
+import Loader from "../../Loader/Loader";
 
 type Props = {
   courseInfo: any;
@@ -15,6 +17,14 @@ const CourseInformation: FC<Props> = ({
   setActive,
 }) => {
   const [dragging, setDragging] = useState(false);
+  const { data, isLoading } = useGetHeroDataQuery("Categories");
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setCategories(data?.layout?.categories);
+    }
+  }, [data]);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -57,6 +67,8 @@ const CourseInformation: FC<Props> = ({
       reader.readAsDataURL(file);
     }
   };
+
+  if (isLoading) return <Loader />;
 
   return (
     <div className="w-[80%] m-auto mt-24">
@@ -134,22 +146,54 @@ const CourseInformation: FC<Props> = ({
           </div>
         </div>
         <br />
-        <div>
-          <label htmlFor="tags" className={`${style.label}`}>
-            Course Tags
-          </label>
-          <input
-            type="text"
-            name=""
-            id="tags"
-            required
-            placeholder="MERN, next 13, react,Socket io, css, LMS"
-            className={`${style.input}`}
-            value={courseInfo.tags}
-            onChange={(e: any) =>
-              setCourseInfo({ ...courseInfo, tags: e.target.value })
-            }
-          />
+        <div className="flex items-center justify-between w-full">
+          <div>
+            <label htmlFor="tags" className={`${style.label}`}>
+              Course Tags
+            </label>
+            <input
+              type="text"
+              name=""
+              id="tags"
+              required
+              placeholder="MERN, next 13, react,Socket io, css, LMS"
+              className={`${style.input}`}
+              value={courseInfo.tags}
+              onChange={(e: any) =>
+                setCourseInfo({ ...courseInfo, tags: e.target.value })
+              }
+            />
+          </div>
+          <div className="w-[50%]">
+            <label htmlFor="category" className={`${style.label} w-[50%]`}>
+              Course Category
+            </label>
+            <select
+              name=""
+              id="category"
+              className={`${style.input}`}
+              value={courseInfo.category}
+              onChange={(e: any) =>
+                setCourseInfo({ ...courseInfo, category: e.target.value })
+              }
+            >
+              <option
+                value=""
+                className="dark:bg-[#333] dark:text-white text-black bg-[#fff]"
+              >
+                Select Category
+              </option>
+              {categories.map((category: any) => (
+                <option
+                  className="dark:bg-[#333] dark:text-white text-black bg-[#fff]"
+                  value={category._id}
+                  key={category._id}
+                >
+                  {category.title}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
         <br />
         <div className="flex items-center justify-between w-full">
@@ -221,7 +265,7 @@ const CourseInformation: FC<Props> = ({
         </div>
         <br />
         <div className="w-full flex items-center justify-end">
-            <input type="submit" value="Next" className={`${style.btn2}`}/>
+          <input type="submit" value="Next" className={`${style.btn2}`} />
         </div>
         <br />
         <br />
