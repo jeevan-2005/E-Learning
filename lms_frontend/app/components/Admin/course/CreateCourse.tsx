@@ -23,6 +23,7 @@ const CreateCourse: FC<Props> = (props) => {
     estimatedPrice: "",
     tags: "",
     level: "",
+    categories: "",
     demoUrl: "",
     thumbnail: "",
   });
@@ -31,7 +32,8 @@ const CreateCourse: FC<Props> = (props) => {
       title: "",
       videoUrl: "",
       description: "",
-      videoSection: "",
+      videoSection: "Untitled Section 1",
+      videoLength: 0,
       links: [
         {
           title: "",
@@ -68,6 +70,7 @@ const CreateCourse: FC<Props> = (props) => {
     const formattedCourseContentData = courseContentData.map((data) => ({
       title: data.title,
       videoUrl: data.videoUrl,
+      videoLength: data.videoLength,
       description: data.description,
       videoSection: data.videoSection,
       links: data.links.map((link) => ({
@@ -83,6 +86,7 @@ const CreateCourse: FC<Props> = (props) => {
       price: courseInfo.price,
       estimatedPrice: courseInfo.estimatedPrice,
       tags: courseInfo.tags,
+      categories: courseInfo.categories,
       level: courseInfo.level,
       demoUrl: courseInfo.demoUrl,
       thumbnail: courseInfo.thumbnail,
