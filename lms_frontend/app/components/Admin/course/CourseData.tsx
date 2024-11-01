@@ -68,7 +68,7 @@ const CourseData: FC<Props> = ({
   return (
     <div className="w-[80%] m-auto mt-24 block">
       <div>
-        <label htmlFor="course-benefits">
+        <label htmlFor="course-benefits" className={`${style.label}`}>
           What are the benefits for the students in this course?
         </label>
         <br />
@@ -86,13 +86,14 @@ const CourseData: FC<Props> = ({
         ))}
         <AddCircleIcon
           style={{ margin: "10px 0", fontSize: "30px", cursor: "pointer" }}
+          className="dark:text-white text-black" 
           onClick={handleAddBenefits}
         />
       </div>
       <br />
       <br />
       <div>
-        <label htmlFor="course-prerequisites">
+        <label htmlFor="course-prerequisites" className={`${style.label}`}>
           What are the prerequisites for the students in this course?
         </label>
         <br />
@@ -110,6 +111,7 @@ const CourseData: FC<Props> = ({
         ))}
         <AddCircleIcon
           style={{ margin: "10px 0", fontSize: "30px", cursor: "pointer" }}
+          className="dark:text-white text-black"
           onClick={handleAddPrerequisites}
         />
       </div>
