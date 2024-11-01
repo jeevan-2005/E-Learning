@@ -23,6 +23,6 @@ layoutRouter.put(
   authorizeRoles("admin"),
   editLayout
 );
-layoutRouter.get("/get-layout", getLayoutByType);
+layoutRouter.get("/get-layout/:type", getLayoutByType);
 
 export default layoutRouter;
