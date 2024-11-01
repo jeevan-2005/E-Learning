@@ -241,7 +241,7 @@ const AdminSidebar:FC<Props> = ({selectedNav}) => {
 
             <Item
               title="FAQ"
-              to="/faq"
+              to="/admin/faq"
               icon={<QuizIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -310,14 +310,6 @@ const AdminSidebar:FC<Props> = ({selectedNav}) => {
             >
               {!isCollapsed && "Extras"}
             </Typography>
-
-            <Item
-              title="Settings"
-              to="/admin/settings"
-              icon={<SettingsIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
 
             <div onClick={logoutHandler}>
               <Item
