@@ -16,12 +16,12 @@ const page: FC<Props> = (props) => {
           description="E-Learning Platform for student to learn and get help with their courses from teachers."
           keywords="E-Learning, Programming, MERN, Machine-Learning, React, Redux"
         />
-        <div className="w-full flex h-screen">
+        <div className="w-full flex min-h-screen">
           <div className="w-[20%]">
             <AdminSidebar selectedNav="Dashboard" />
           </div>
           <div className="w-[80%]">
-            <DashboardHero />
+            <DashboardHero isDashboard={true} />
           </div>
         </div>
       </AdminProtected>
