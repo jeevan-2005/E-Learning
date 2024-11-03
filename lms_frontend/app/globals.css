@@ -24,7 +24,7 @@
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -41,6 +41,14 @@ input::-webkit-outer-spin-button {
 body {
   color: var(--foreground);
 }
+
+.text-gradient{
+  background: linear-gradient(89.97deg, #270db9 1.84%, #908fe9 102.67%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .hero_animation {
   background-image: linear-gradient(
     147.92deg,
