@@ -1,11 +1,16 @@
 import Image from "next/image";
 import React from "react";
-import bannerImage1 from "../../../public/assests/banner-img-1.png";
 import profileImage from "../../../public/assests/profileImg.jpg";
 import { BiSearch } from "react-icons/bi";
 import Link from "next/link";
+import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
+import Loader from "../Loader/Loader";
 
 const Hero = () => {
+  const {data, isLoading} = useGetHeroDataQuery("Banner",{})
+  if (isLoading) {
+    return <Loader />
+  }
   return (
     <div className="w-full 1000px:flex items-center justify-center gap-[30px] px-10 mt-3">
       <div
@@ -13,20 +18,21 @@ const Hero = () => {
         //  className="1000px:w-[40%] flex 1000px:min-h-screen items-center justify-center 1000px:pt-[0] z-10"
       >
         <Image
-          src={bannerImage1}
+          src={data?.layout?.banner?.image?.url}
+          width={400}
+          height={400}
           alt="bannerImg1"
-          className="w-[90%] h-auto z-[15]"
+          className="w-[80%] h-auto z-[15]"
         />
         <div className="absolute top-0 left-0 z-0 1000px:top-[unset] 1500px:h-[600px] 1500px:w-[600px] 1100px:h-[600px] 1100px:w-[600px] h-[50vh] w-[50vh] hero_animation rounded-full flex items-center justify-center"></div>
       </div>
       <div className="flex flex-col items-start justify-center w-[30%]">
         <h2 className="dark:text-white text-[#000000c7] 1500px:text-[50px] text-30px 1000px:text-[70px] font-Josefin font-[600]  py-2 1000px:leading-[75px] w-[100%]">
-          Improve Your Online Learning Experience Better Instantly
+          {data?.layout?.banner?.title}
         </h2>
         <br />
         <p className="dark:text-[#edfff4] text-[#000000ac] font-Josefin font-[600] text-[18px] w-full">
-          We have 40k+ Online Courses and 500k+ Online registered students. Find
-          your desired courses for them.
+          {data?.layout?.banner?.subTitle}
         </p>
         <br />
         <br />
