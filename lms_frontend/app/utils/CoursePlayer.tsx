@@ -7,7 +7,7 @@ type Props = {
 
 const CoursePlayer: FC<Props> = ({ videoUrl }) => {
   return (
-    <div className="pt-[41%] relative">
+    <div className="pt-[55%] relative">
       <iframe
         style={{
             border: 0,
