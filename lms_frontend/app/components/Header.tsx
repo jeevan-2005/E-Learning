@@ -49,7 +49,7 @@ const Header: FC<Props> = ({ open, setOpen, activeItem, route, setRoute }) => {
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
-      if (window.scrollY > 90) {
+      if (window.scrollY > 50) {
         setActive(true);
       } else {
         setActive(false);
