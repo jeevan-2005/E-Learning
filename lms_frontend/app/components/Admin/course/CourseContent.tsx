@@ -52,6 +52,7 @@ const CourseContent: FC<Props> = ({
       item.title === "" ||
       item.videoUrl === "" ||
       item.description === "" ||
+      item.videoLength === "" ||
       item.links[0].title === "" ||
       item.links[0].url === ""
     ) {
@@ -72,6 +73,7 @@ const CourseContent: FC<Props> = ({
       title: "",
       videoUrl: "",
       description: "",
+      videoLength: 0,
       videoSection: newVideoSection,
       links: [
         {
@@ -94,6 +96,7 @@ const CourseContent: FC<Props> = ({
       courseContentData[courseContentData.length - 1].videoUrl === "" ||
       courseContentData[courseContentData.length - 1].description === "" ||
       courseContentData[courseContentData.length - 1].links[0].title === "" ||
+      courseContentData[courseContentData.length - 1].videoLength === "" ||
       courseContentData[courseContentData.length - 1].links[0].url === ""
     ) {
       toast.error("Please fill all the fields before moving to next step");
@@ -104,6 +107,7 @@ const CourseContent: FC<Props> = ({
       title: "",
       videoUrl: "",
       description: "",
+      videoLength: 0,
       videoSection: `Untitled Section ${activeSection + 1}`,
       links: [
         {
@@ -130,6 +134,7 @@ const CourseContent: FC<Props> = ({
       courseContentData[courseContentData.length - 1].title === "" ||
       courseContentData[courseContentData.length - 1].videoUrl === "" ||
       courseContentData[courseContentData.length - 1].description === "" ||
+      courseContentData[courseContentData.length - 1].videoLength === "" ||
       courseContentData[courseContentData.length - 1].links[0].title === "" ||
       courseContentData[courseContentData.length - 1].links[0].url === ""
     ) {
