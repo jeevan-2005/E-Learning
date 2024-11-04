@@ -18,7 +18,7 @@ const CourseInformation: FC<Props> = ({
 }) => {
   const [dragging, setDragging] = useState(false);
   const { data, isLoading } = useGetHeroDataQuery("Categories");
-  const [categories, setCategories] = useState([]);
+  const [categorys, setCategories] = useState([]);
 
   useEffect(() => {
     if (data) {
@@ -172,9 +172,9 @@ const CourseInformation: FC<Props> = ({
               name=""
               id="category"
               className={`${style.input}`}
-              value={courseInfo.category}
+              value={courseInfo.categories}
               onChange={(e: any) =>
-                setCourseInfo({ ...courseInfo, category: e.target.value })
+                setCourseInfo({ ...courseInfo, categories: e.target.value })
               }
             >
               <option
@@ -183,7 +183,7 @@ const CourseInformation: FC<Props> = ({
               >
                 Select Category
               </option>
-              {categories.map((category: any) => (
+              {categorys.map((category: any) => (
                 <option
                   className="dark:bg-[#333] dark:text-white text-black bg-[#fff]"
                   value={category._id}
