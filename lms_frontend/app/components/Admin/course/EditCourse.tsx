@@ -13,6 +13,7 @@ import {
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 import Loader from "../../Loader/Loader";
+import { Category } from "@mui/icons-material";
 
 type Props = {
   id: string;
@@ -41,6 +42,7 @@ const EditCourse: FC<Props> = ({ id }) => {
     tags: "",
     level: "",
     demoUrl: "",
+    categories: "",
     thumbnail: "",
   });
   const [courseContentData, setCourseContentData] = useState([
@@ -49,6 +51,7 @@ const EditCourse: FC<Props> = ({ id }) => {
       videoUrl: "",
       description: "",
       videoSection: "",
+      videoLength: 0,
       links: [
         {
           title: "",
@@ -68,6 +71,7 @@ const EditCourse: FC<Props> = ({ id }) => {
         name: editCourseData.name,
         description: editCourseData.description,
         price: editCourseData.price,
+        categories: editCourseData.categories,
         estimatedPrice: editCourseData?.estimatedPrice,
         tags: editCourseData.tags,
         level: editCourseData?.level,
@@ -103,6 +107,7 @@ const EditCourse: FC<Props> = ({ id }) => {
       title: data.title,
       videoUrl: data.videoUrl,
       description: data.description,
+      videoLength: data.videoLength,
       videoSection: data.videoSection,
       links: data.links.map((link) => ({
         title: link.title,
@@ -116,6 +121,7 @@ const EditCourse: FC<Props> = ({ id }) => {
       description: courseInfo.description,
       price: courseInfo.price,
       estimatedPrice: courseInfo.estimatedPrice,
+      categories: courseInfo.categories,
       tags: courseInfo.tags,
       level: courseInfo.level,
       demoUrl: courseInfo.demoUrl,
