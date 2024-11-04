@@ -59,7 +59,7 @@ const CreateCourse: FC<Props> = (props) => {
     }
   }, [isLoading, isSuccess, error]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     const formattedBenefits = benefits.map((benefit) => ({
       title: benefit.title,
     }));
