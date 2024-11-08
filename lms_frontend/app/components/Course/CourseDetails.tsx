@@ -3,13 +3,12 @@ import CoursePlayer from "../../utils/CoursePlayer";
 import Ratings from "../../utils/Ratings";
 import React, { useState } from "react";
 import { IoCheckmarkDoneOutline, IoCloseOutline } from "react-icons/io5";
-import { useSelector } from "react-redux";
 import { format } from "timeago.js";
 import Link from "next/link";
 import CourseContentList from "../Course/CourseContentList";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../Payment/CheckoutForm";
-import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
 
 type Props = {
   course: any;
