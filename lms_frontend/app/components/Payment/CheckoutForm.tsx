@@ -9,7 +9,7 @@ import {
 import React, { FC, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
-import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
 type Props = {
   setOpen: (open: boolean) => void;
   course: any;
