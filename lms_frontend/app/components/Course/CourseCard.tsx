@@ -10,7 +10,7 @@ type Props = {
 };
 
 const CourseCard: FC<Props> = ({ course, isProfile }) => {
-  console.log(course);
+  
   return (
     <Link
       href={
