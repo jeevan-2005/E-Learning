@@ -11,7 +11,6 @@ const Courses: FC<Props> = (props) => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       setCourses(data?.allCourses);
     }
   }, [data]);
