@@ -12,6 +12,9 @@ import { style } from "../../styles/styles";
 import { useLoginMutation } from "../../../redux/features/auth/authApi";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
+import Loader from "../Loader/Loader";
+import { FaSpinner } from "react-icons/fa";
+import { CircularProgress } from "@mui/material";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -27,7 +30,7 @@ const schema = Yup.object().shape({
 
 const Login: FC<Props> = ({ setRoute, setOpen }) => {
   const [show, setShow] = useState(false);
-  const [login, { error, isSuccess, data }] = useLoginMutation();
+  const [login, { error, isSuccess, data, isLoading }] = useLoginMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -56,6 +59,8 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
   });
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
+
+  // if(isLoading) return <Loader />
 
   return (
     <div className="w-full">
@@ -111,7 +116,13 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
           <span className="text-red-500 pt-1 block">{errors.password}</span>
         )}
         <div className="w-full mt-8">
-          <input type="submit" value="Login" className={`${style.btn}`} />
+          <button type="submit" className={`${style.btn}`} disabled={isLoading}>
+            {isLoading ? (
+              <CircularProgress size={20} color="success" />
+            ) : (
+              "Login"
+            )}
+          </button>
         </div>
         <br />
         <h5 className="text-center pt-4 text-black dark:text-white font-Poppins text-[16px]]">
