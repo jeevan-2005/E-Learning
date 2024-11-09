@@ -58,7 +58,15 @@ const CourseDetailsPage: FC<Props> = ({ id }) => {
         setRoute={setRoute}
         activeItem={1}
       />
-      {stripePromise && <CourseDetails course={data?.course} stripePromise={stripePromise} clientSecret={clientSecret}  />}
+      {stripePromise && (
+        <CourseDetails
+          setOpen={setOpen}
+          setRoute={setRoute}
+          course={data?.course}
+          stripePromise={stripePromise}
+          clientSecret={clientSecret}
+        />
+      )}
       <Footer />
     </div>
   );
