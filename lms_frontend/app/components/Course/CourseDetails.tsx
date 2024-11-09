@@ -8,9 +8,13 @@ import Link from "next/link";
 import CourseContentList from "../Course/CourseContentList";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../Payment/CheckoutForm";
-import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
+import avatarDefault from "../../../public/assests/avatar.webp";
+import Image from "next/image";
+import { useSelector } from "react-redux";
 
 type Props = {
+  setOpen: (open: boolean) => void;
+  setRoute: (route: string) => void;
   course: any;
   stripePromise: any;
   clientSecret: string;
@@ -20,9 +24,10 @@ const CourseDetails: React.FC<Props> = ({
   course,
   stripePromise,
   clientSecret,
+  setRoute,
+  setOpen: setOpenAuthModel,
 }) => {
-  const { data: userData } = useLoadUserQuery(undefined, {});
-  const user = userData?.user;
+  const {user} = useSelector((state: any) => state.auth);
   const [open, setOpen] = useState(false);
 
   const discountPercentage = (
@@ -34,8 +39,15 @@ const CourseDetails: React.FC<Props> = ({
     user && user?.courses?.find((item: any) => item._id === course._id);
 
   const handleOrder = () => {
-    setOpen(true);
+    if (user) {
+      setOpen(true);
+    }else{
+      setRoute("Login");
+      setOpenAuthModel(true);
+    }
   };
+
+  // if (isLoading) return <Loader />;
 
   return (
     <div className="w-[90%] m-auto py-5">
@@ -124,12 +136,18 @@ const CourseDetails: React.FC<Props> = ({
             [...course?.reviews].reverse().map((review: any, index: number) => (
               <div className="w-full py-8" key={index}>
                 <div className="flex">
-                  <div className="w-[50px] h-[50px]">
-                    <div className="w-[50px] h-[50px] rouded-full bg-slate-600 flex items-center justify-center cursor-pointer">
-                      <h1 className="text-[18px] uppercase text-black dark:text-white">
-                        {review?.user?.name.slice(0, 2)}
-                      </h1>
-                    </div>
+                  <div>
+                    <Image
+                      src={
+                        review?.user?.avatar
+                          ? review?.user?.avatar?.url
+                          : avatarDefault
+                      }
+                      alt="avatar"
+                      width={50}
+                      height={50}
+                      className="rounded-full h-[50px] w-[50px]"
+                    />
                   </div>
                   <div className="hidden 800px:block pl-2">
                     <div className="flex items-center">
