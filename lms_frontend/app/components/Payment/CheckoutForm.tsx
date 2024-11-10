@@ -8,20 +8,25 @@ import {
 } from "@stripe/react-stripe-js";
 import React, { FC, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { redirect } from "next/navigation";
-import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
+import socketIO from "socket.io-client";
+
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
+const socketId = socketIO(ENDPOINT, {
+  transports: ["websocket"],
+});
+
 type Props = {
   setOpen: (open: boolean) => void;
   course: any;
+  user: any;
+  refetch?: any;
 };
 
-const CheckoutForm: FC<Props> = ({ setOpen, course }) => {
+const CheckoutForm: FC<Props> = ({ setOpen, course, user, refetch }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState<any>(null);
-  const [createOrder, { data: orderData, error }] = useCreateOrderMutation();
-  const [loadUser, setLoadUser] = useState(false);
-  const { data } = useLoadUserQuery({ skip: loadUser ? false : true });
+  const [createOrder, { isSuccess, error }] = useCreateOrderMutation();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: any) => {
@@ -43,12 +48,16 @@ const CheckoutForm: FC<Props> = ({ setOpen, course }) => {
   };
 
   useEffect(() => {
-    if (orderData) {
-      setLoadUser(true);
+    if (isSuccess) {
       setIsLoading(false);
       toast.success("Payment successful");
       setOpen(false);
-      redirect(`/course-access/${course._id}`);
+      refetch();
+      socketId.emit("notification", {
+        title: "New Order",
+        message: `${user?.name} has placed an order for ${course?.name}`,
+        userId: user?._id,
+      });
     }
     if (error && "data" in error) {
       setIsLoading(false);
@@ -56,7 +65,7 @@ const CheckoutForm: FC<Props> = ({ setOpen, course }) => {
       const errorMessage = errorData.message;
       toast.error(errorMessage);
     }
-  }, [orderData, error]);
+  }, [isSuccess, error]);
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
