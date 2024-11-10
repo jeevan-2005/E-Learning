@@ -7,6 +7,13 @@ import { Providers } from "./Provider";
 import { SessionProvider } from "next-auth/react";
 import { useLoadUserQuery } from "../redux/features/api/apiSlice";
 import Loader from "./components/Loader/Loader";
+import { useEffect } from "react";
+import socketIO from "socket.io-client";
+
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
+const socketId = socketIO(ENDPOINT, {
+  transports: ["websocket"],
+});
 
 const poppinsFont = Poppins({
   subsets: ["latin"],
@@ -43,18 +50,12 @@ export default function RootLayout({
   );
 }
 
+const Custom: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isLoading } = useLoadUserQuery({});
 
-const Custom : React.FC<{children: React.ReactNode}> = ({children}) => {
+  useEffect(() => {
+    socketId.on("connection", () => {});
+  }, []);
 
-  const {isLoading} = useLoadUserQuery({});
- console.log("in custom loader ", isLoading)
-  return (
-    <>
-      {
-        isLoading ? (
-          <Loader />
-        ) : <>{children}</>
-      }
-    </>
-  )
-}
+  return <>{isLoading ? <Loader /> : <>{children}</>}</>;
+};
