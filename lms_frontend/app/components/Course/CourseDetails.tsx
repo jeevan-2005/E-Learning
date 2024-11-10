@@ -10,8 +10,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../Payment/CheckoutForm";
 import avatarDefault from "../../../public/assests/avatar.webp";
 import Image from "next/image";
-import { useSelector } from "react-redux";
-import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
 
 type Props = {
   setOpen: (open: boolean) => void;
