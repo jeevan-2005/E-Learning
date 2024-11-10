@@ -19,6 +19,7 @@ import { CircularProgress } from "@mui/material";
 type Props = {
   setRoute: (route: string) => void;
   setOpen: (open: boolean) => void;
+  refetch?: any;
 };
 
 const schema = Yup.object().shape({
@@ -28,16 +29,16 @@ const schema = Yup.object().shape({
   password: Yup.string().required("Please enter your password!").min(6),
 });
 
-const Login: FC<Props> = ({ setRoute, setOpen }) => {
+const Login: FC<Props> = ({ setRoute, setOpen , refetch}) => {
   const [show, setShow] = useState(false);
   const [login, { error, isSuccess, data, isLoading }] = useLoginMutation();
 
   useEffect(() => {
     if (isSuccess) {
-      console.log(data);
       const message = data?.message || "Login successful!";
       setOpen(false);
       toast.success(message);
+      refetch();
     }
     if (error && "data" in error) {
       const errorData = error.data as { message?: string };
