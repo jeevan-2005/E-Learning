@@ -12,8 +12,6 @@ import { style } from "../../styles/styles";
 import { useLoginMutation } from "../../../redux/features/auth/authApi";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
-import Loader from "../Loader/Loader";
-import { FaSpinner } from "react-icons/fa";
 import { CircularProgress } from "@mui/material";
 
 type Props = {
