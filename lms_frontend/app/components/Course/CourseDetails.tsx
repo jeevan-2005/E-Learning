@@ -11,6 +11,7 @@ import CheckoutForm from "../Payment/CheckoutForm";
 import avatarDefault from "../../../public/assests/avatar.webp";
 import Image from "next/image";
 import { useSelector } from "react-redux";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 type Props = {
   setOpen: (open: boolean) => void;
@@ -27,7 +28,14 @@ const CourseDetails: React.FC<Props> = ({
   setRoute,
   setOpen: setOpenAuthModel,
 }) => {
-  const {user} = useSelector((state: any) => state.auth);
+  const {
+    data: userData,
+    isLoading,
+    refetch,
+  } = useLoadUserQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+  const user = userData?.user;
   const [open, setOpen] = useState(false);
 
   const discountPercentage = (
@@ -231,7 +239,7 @@ const CourseDetails: React.FC<Props> = ({
               <div className="w-full">
                 {stripePromise && clientSecret && (
                   <Elements stripe={stripePromise} options={{ clientSecret }}>
-                    <CheckoutForm setOpen={setOpen} course={course} />
+                    <CheckoutForm setOpen={setOpen} course={course} user={user} refetch={refetch} />
                   </Elements>
                 )}
               </div>
