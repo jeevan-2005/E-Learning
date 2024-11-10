@@ -43,7 +43,7 @@ const CourseContentPurchasedUser: FC<Props> = ({ id, user }) => {
         setRoute={setRoute}
         activeItem={1}
       />
-      <div className="w-full grid 800px:grid-cols-10">
+      <div className="w-full grid 800px:grid-cols-10 min-h-screen">
         <Heading
           title={content[activeVideo]?.title}
           description={content[activeVideo]?.description}
