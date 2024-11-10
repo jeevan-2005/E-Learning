@@ -17,7 +17,7 @@ const ReviewCard: FC<Props> = ({ review }) => {
           height={50}
           width={50}
         />
-        <div className="800px:flex justify-between w-full">
+        <div className="1000px:flex justify-between w-full hidden">
           <div className="pl-4">
             <h5 className="text-[20px] text-black dark:text-white">
               {review?.name}
@@ -29,16 +29,16 @@ const ReviewCard: FC<Props> = ({ review }) => {
           <Ratings rating={review?.rating} />
         </div>
         {/* for mobile */}
-        <div className="800px:hidden flex flex-col justify-between w-full">
+        <div className="1000px:hidden flex flex-col justify-between w-full">
           <div className="pl-4">
             <h5 className="text-[20px] text-black dark:text-white">
               {review?.name}
             </h5>
-            <h6 className="text-[16px] text-black dark:text-white">
+            <h6 className="text-[16px] text-black dark:text-white pb-1">
               {review?.profession}
             </h6>
-          </div>
           <Ratings rating={review?.rating} />
+          </div>
         </div>
       </div>
       <p className="pt-2 px-2 font-Poppins text-black dark:text-white">
