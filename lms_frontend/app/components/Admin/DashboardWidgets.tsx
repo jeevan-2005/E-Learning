@@ -4,7 +4,7 @@ import { BiBorderLeft } from "react-icons/bi";
 import { PiUsersFourLight } from "react-icons/pi";
 import { Box, CircularProgress } from "@mui/material";
 import OrderAnalytics from "./analytics/OrderAnalytics";
-import AllInvoices from "./orderInvoices/AllInvoices.tsx";
+import AllInvoices from "./orderInvoices/AllInvoices";
 
 type Props = {
   open?: boolean;
