@@ -22,9 +22,9 @@ const Hero = () => {
     return <Loader />;
   }
   return (
-    <div className="w-full 1000px:flex items-center justify-center gap-[30px] px-10 mt-3">
+    <div className="w-[80%] 800px:w-full 800px:flex items-center justify-center gap-[30px] 800px:gap-0 800px:px-10 mx-auto mt-3">
       <div
-        className="relative z-10 flex items-center justify-center w-[50%]"
+        className="relative z-10 flex items-center justify-center 800px:w-[50%] 800px:h-[300px] h-[45vh]"
         //  className="1000px:w-[40%] flex 1000px:min-h-screen items-center justify-center 1000px:pt-[0] z-10"
       >
         <Image
@@ -32,12 +32,12 @@ const Hero = () => {
           width={400}
           height={400}
           alt="bannerImg1"
-          className="w-[80%] h-auto z-[15]"
+          className="800px:w-[80%] h-auto z-[15]"
         />
-        <div className="absolute top-0 left-0 z-0 1000px:top-[unset] 1500px:h-[600px] 1500px:w-[600px] 1100px:h-[600px] 1100px:w-[600px] h-[50vh] w-[50vh] hero_animation rounded-full flex items-center justify-center"></div>
+        <div className="absolute top-0 left-0 z-0 1000px:top-[unset] 1500px:h-[600px] 1500px:w-[600px] 1100px:h-[600px] 1100px:w-[600px] h-[45vh] w-[45vh] 800px:h-[300px] 800px:w-[300px] 800px:left-3 hero_animation rounded-full flex items-center justify-center"></div>
       </div>
-      <div className="flex flex-col items-start justify-center w-[30%]">
-        <h2 className="dark:text-white text-[#000000c7] 1500px:text-[50px] text-30px 1000px:text-[70px] font-Josefin font-[600]  py-2 1000px:leading-[75px] w-[100%]">
+      <div className="flex flex-col items-start justify-center 1100px:w-[30%] 800px:w-[50%]">
+        <h2 className="dark:text-white text-[#000000c7] 1500px:text-[50px] text-[30px] 800px:text-[28px] 800px:text-left font-Josefin font-[600]  py-2 1000px:leading-[75px] w-[100%] text-center">
           {data?.layout?.banner?.title}
         </h2>
         <br />
