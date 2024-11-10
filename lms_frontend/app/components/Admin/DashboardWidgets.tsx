@@ -48,7 +48,7 @@ const DashboardWidgets: FC<Props> = ({ open }) => {
 
         <div className="pt-[80px] pr-8">
           <div className="w-full rounded-sm shadow-md dark:bg-[#111C43]">
-            <div className="flex items-center justify-between p-5">
+            <div className="flex items-center flex-row-reverse justify-around p-5">
               <div className="">
                 <BiBorderLeft className="text-[30px] text-[#000] dark:text-[#45CBA0]" />
                 <h5 className="text-[20px] font-[400] py-2 font-Poppins text-[#000] dark:text-[#45CBA0]">
@@ -65,7 +65,7 @@ const DashboardWidgets: FC<Props> = ({ open }) => {
           </div>
 
           <div className="w-full rounded-sm shadow-md dark:bg-[#111C43] my-8">
-            <div className="flex items-center justify-between p-5">
+            <div className="flex items-center flex-row-reverse justify-around p-5">
               <div className="">
                 <PiUsersFourLight className="text-[30px] text-[#000] dark:text-[#45CBA0]" />
                 <h5 className="text-[20px] pt-2 font-Poppins text-[#000] dark:text-[#fff]">
