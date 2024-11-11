@@ -36,7 +36,7 @@ const CourseInformation: FC<Props> = ({
     if (file) {
       const reader = new FileReader();
 
-      reader.onload = (e: any) => {
+      reader.onload = () => {
         if (reader.readyState === 2) {
           setCourseInfo({ ...courseInfo, thumbnail: reader.result });
         }
@@ -61,7 +61,7 @@ const CourseInformation: FC<Props> = ({
     const file = e.dataTransfer.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e: any) => {
+      reader.onload = () => {
         setCourseInfo({ ...courseInfo, thumbnail: reader.result });
       };
       reader.readAsDataURL(file);
