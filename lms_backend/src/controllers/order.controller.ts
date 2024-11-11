@@ -1,19 +1,36 @@
+require("dotenv").config();
 import { IOrder } from "../models/order.model";
 import { Request, Response, NextFunction } from "express";
 import catchAsyncError from "../middlewares/catchAsyncError.middleware";
 import ErrorHandler from "../utils/ErrorHandler";
 import { UserModel } from "../models/user.model";
-import CourseModel, { ICourse } from "../models/course.model";
+import CourseModel from "../models/course.model";
 import NotificationModel from "../models/notification.model";
 import sendEmail from "../utils/mailSender";
 import ejs from "ejs";
 import path from "path";
 import { getAllOrdersService, newOrder } from "../services/order.service";
+import { redis } from "../utils/redis";
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const createOrder = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { courseId, payment_info } = req.body as IOrder;
+
+      if (payment_info) {
+        if ("id" in payment_info) {
+          const paymentIntentId = payment_info.id;
+          const paymentIntent = await stripe.paymentIntents.retrieve(
+            paymentIntentId
+          );
+
+          if (paymentIntent.status !== "succeeded") {
+            return next(new ErrorHandler("Payment not authorized", 400));
+          }
+        }
+      }
+
       const user = await UserModel.findById(req.user?._id);
 
       const isCourseExists = user?.courses.some(
@@ -72,12 +89,14 @@ const createOrder = catchAsyncError(
       await NotificationModel.create({
         userId: user?._id,
         title: "New Order",
-        message: `${user?.name} has placed an order for ${course?.name} course `,
+        message: `${user?.name} has placed an order for ${course?.name}`,
       });
 
       user?.courses.push({
         _id: course?._id,
       } as any);
+
+      await redis.set(user?._id as string, JSON.stringify(user) as any);
 
       await user?.save();
 
@@ -85,6 +104,26 @@ const createOrder = catchAsyncError(
         course.purchased += 1;
       } else {
         course.purchased = 1;
+      }
+
+      await course?.save();
+
+      const updatedCourse = await CourseModel.findById(course?._id).select(
+        "-courseData.videoUrl -courseData.links -courseData.suggestions -courseData.questions"
+      );
+
+      await redis.set(course?._id as string, JSON.stringify(course) as any);
+
+      const redisAllCourses = await redis.get("allCourses");
+      if (redisAllCourses) {
+        const allCourses = JSON.parse(redisAllCourses);
+        const newAllCourses = allCourses.map((course: any) => {
+          if (course._id.toString() === courseId) {
+            return updatedCourse;
+          }
+          return course;
+        });
+        await redis.set("allCourses", JSON.stringify(newAllCourses));
       }
 
       newOrder(orderData, res, next);
@@ -99,10 +138,42 @@ const getAllOrders = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       getAllOrdersService(res);
-    } catch (error:any) {
+    } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
   }
 );
 
-export { createOrder, getAllOrders };
+const getStripePublishableKey = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json({
+      publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    });
+  }
+);
+
+const newPayment = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const myPayment = await stripe.paymentIntents.create({
+        amount: req.body.amount,
+        currency: "USD",
+        metadata: {
+          company: "E-Learning",
+        },
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      });
+
+      res.status(201).json({
+        success: true,
+        clientSecret: myPayment.client_secret,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
+
+export { createOrder, getAllOrders, getStripePublishableKey, newPayment };
