@@ -11,6 +11,7 @@ import { FcGoogle } from "react-icons/fc";
 import { style } from "../../styles/styles";
 import { useRegisterMutation } from "../../../redux/features/auth/authApi";
 import toast from "react-hot-toast";
+import { CircularProgress } from "@mui/material";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -26,7 +27,8 @@ const schema = Yup.object().shape({
 
 const SignUp: FC<Props> = ({ setRoute }) => {
   const [show, setShow] = useState(false);
-  const [register, { error, isSuccess, data }] = useRegisterMutation();
+  const [register, { error, isSuccess, data, isLoading }] =
+    useRegisterMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -130,7 +132,13 @@ const SignUp: FC<Props> = ({ setRoute }) => {
           <span className="text-red-500 pt-1 block">{errors.password}</span>
         )}
         <div className="w-full mt-8">
-          <input type="submit" value="Sign-up" className={`${style.btn}`} />
+          <button type="submit" className={`${style.btn}`} disabled={isLoading}>
+            {isLoading ? (
+              <CircularProgress size={20} color="success" />
+            ) : (
+              "Sign-up"
+            )}
+          </button>
         </div>
         <br />
         <h5 className="text-center pt-4 text-black dark:text-white font-Poppins text-[16px]]">
