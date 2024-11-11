@@ -282,34 +282,40 @@ const CourseContentMedia: FC<Props> = ({
       )}
       {activeBar === 2 && (
         <>
-          <div className="w-full flex">
-            <Image
-              src={user?.avatar ? user?.avatar?.url : avatarDefault}
-              alt="avatar"
-              width={50}
-              height={50}
-              className="rounded-full h-[50px] w-[50px]"
-            />
-            <textarea
-              name=""
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              cols={40}
-              rows={5}
-              placeholder="ask any question..."
-              className="outline-none bg-transparent ml-3 border dark:border-[#ffffff57] border-[#00000030]  800px:w-full p-2 rounded w-[90%] font-Poppins 800px:text-[18px] text-black dark:text-white"
-            ></textarea>
-          </div>
-          <div className="w-full flex justify-end mt-2">
-            <div
-              className={`${style.btn2} ${
-                questionCreationLoading && "!cursor-no-drop opacity-[0.7]"
-              } !mt-0 !h-[35px] !w-[120px] !rounded-lg `}
-              onClick={questionCreationLoading ? () => {} : handleAddQuestion}
-            >
-              {questionCreationLoading ? "Submitting..." : "Submit"}
-            </div>
-          </div>
+          {user?.role !== "admin" && (
+            <>
+              <div className="w-full flex">
+                <Image
+                  src={user?.avatar ? user?.avatar?.url : avatarDefault}
+                  alt="avatar"
+                  width={50}
+                  height={50}
+                  className="rounded-full h-[50px] w-[50px]"
+                />
+                <textarea
+                  name=""
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  cols={40}
+                  rows={5}
+                  placeholder="ask any question..."
+                  className="outline-none bg-transparent ml-3 border dark:border-[#ffffff57] border-[#00000030]  800px:w-full p-2 rounded w-[90%] font-Poppins 800px:text-[18px] text-black dark:text-white"
+                ></textarea>
+              </div>
+              <div className="w-full flex justify-end mt-2">
+                <div
+                  className={`${style.btn2} ${
+                    questionCreationLoading && "!cursor-no-drop opacity-[0.7]"
+                  } !mt-0 !h-[35px] !w-[120px] !rounded-lg `}
+                  onClick={
+                    questionCreationLoading ? () => {} : handleAddQuestion
+                  }
+                >
+                  {questionCreationLoading ? "Submitting..." : "Submit"}
+                </div>
+              </div>
+            </>
+          )}
           <div className="w-full h-[1px] dark:bg-[#ffffff3b] bg-[#0000003b]  my-4"></div>
           <div>
             <CommentReply
@@ -318,6 +324,7 @@ const CourseContentMedia: FC<Props> = ({
               answer={answer}
               setAnswer={setAnswer}
               handleAnswerSubmit={handleAnswerSubmit}
+              questionId={questionId}
               setQuestionId={setQuestionId}
               answerLoading={answerLoading}
             />
@@ -400,6 +407,7 @@ const CourseContentMedia: FC<Props> = ({
                       setReviewReply={setReviewReply}
                       handleReviewReplySubmit={handleReviewReplySubmit}
                       reviewReplyLoading={reviewReplyLoading}
+                      reviewId={reviewId}
                       setReviewId={setReviewId}
                     />
                   ))}
@@ -416,6 +424,7 @@ const CommentReply = ({
   activeVideo,
   answer,
   setAnswer,
+  questionId,
   handleAnswerSubmit,
   setQuestionId,
   answerLoading,
@@ -431,6 +440,7 @@ const CommentReply = ({
               question={question}
               answer={answer}
               setAnswer={setAnswer}
+              questionId={questionId}
               setQuestionId={setQuestionId}
               handleAnswerSubmit={handleAnswerSubmit}
               answerLoading={answerLoading}
@@ -448,6 +458,7 @@ const ReviewItem = ({
   setReviewReply,
   handleReviewReplySubmit,
   reviewReplyLoading,
+  reviewId,
   setReviewId,
 }: any) => {
   const [isReplyActive, setIsReplyActive] = useState(false);
@@ -478,11 +489,13 @@ const ReviewItem = ({
               <span
                 className="cursor-pointer dark:text-[#ffffffba] text-[#000000bf] mr-2"
                 onClick={() => {
-                  setIsReplyActive(!isReplyActive);
+                  setIsReplyActive(
+                    reviewId !== review?._id ? true : !isReplyActive
+                  );
                   setReviewId(review?._id);
                 }}
               >
-                {!isReplyActive
+                {!isReplyActive || reviewId !== review?._id
                   ? review?.commentReplies?.length > 0
                     ? "View Replies"
                     : "Add Reply"
@@ -504,70 +517,71 @@ const ReviewItem = ({
           </div>
         </div>
       </div>
-      {isReplyActive && (
-        <>
-          {review?.commentReplies &&
-            [...review?.commentReplies]
-              .reverse()
-              .map((reply: any, index: number) => (
-                <div
-                  className="w-full flex my-5 800px:ml-16 text-black dark:text-white"
-                  key={index}
-                >
-                  <Image
-                    src={
-                      reply?.user?.avatar
-                        ? reply?.user?.avatar?.url
-                        : avatarDefault
-                    }
-                    alt="avatar"
-                    width={50}
-                    height={50}
-                    className="rounded-full h-[50px] w-[50px]"
-                  />
-                  <div className="pl-3">
-                    <div className="flex items-center">
-                      <h5 className="text-[20px] text-black dark:text-white">
-                        {reply?.user?.name}
-                      </h5>
-                      {reply?.user?.role === "admin" && (
-                        <VscVerifiedFilled className="ml-2 text-[20px] text-[#50c750]" />
-                      )}
+      {isReplyActive &&
+        (user.role === "admin" ? reviewId === review?._id : true) && (
+          <>
+            {review?.commentReplies &&
+              [...review?.commentReplies]
+                .reverse()
+                .map((reply: any, index: number) => (
+                  <div
+                    className="w-full flex my-5 800px:ml-16 text-black dark:text-white"
+                    key={index}
+                  >
+                    <Image
+                      src={
+                        reply?.user?.avatar
+                          ? reply?.user?.avatar?.url
+                          : avatarDefault
+                      }
+                      alt="avatar"
+                      width={50}
+                      height={50}
+                      className="rounded-full h-[50px] w-[50px]"
+                    />
+                    <div className="pl-3">
+                      <div className="flex items-center">
+                        <h5 className="text-[20px] text-black dark:text-white">
+                          {reply?.user?.name}
+                        </h5>
+                        {reply?.user?.role === "admin" && (
+                          <VscVerifiedFilled className="ml-2 text-[20px] text-[#50c750]" />
+                        )}
+                      </div>
+                      <p className="text-[16px] text-black dark:text-white">
+                        {reply?.comment}
+                      </p>
+                      <small className="dark:text-[#ffffff83] text-[#00000080]">
+                        {reply?.createdAt ? format(reply?.createdAt) : ""}
+                      </small>
                     </div>
-                    <p className="text-[16px] text-black dark:text-white">
-                      {reply?.comment}
-                    </p>
-                    <small className="dark:text-[#ffffff83] text-[#00000080]">
-                      {reply?.createdAt ? format(reply?.createdAt) : ""}
-                    </small>
                   </div>
-                </div>
-              ))}
-          {user.role === "admin" && (
-            <div className="w-full flex relative">
-              <input
-                type="text"
-                placeholder="enter your reply..."
-                value={reviewReply}
-                onChange={(e) => setReviewReply(e.target.value)}
-                className="block 800px:ml-12 mt-2 outline-none text-black dark:text-white bg-transparent border-b dark:border-[#fff] border-[#000] p-[5px] w-[95%]"
-              />
-              <button
-                type="submit"
-                className={`absolute bottom-1 right-1 text-black dark:text-white ${
-                  reviewReply === "" || reviewReplyLoading
-                    ? "!cursor-not-allowed opacity-60"
-                    : "!cursor-pointer"
-                }`}
-                onClick={handleReviewReplySubmit}
-                disabled={reviewReply === "" || reviewReplyLoading}
-              >
-                {reviewReplyLoading ? "Submitting..." : "Submit"}
-              </button>
-            </div>
-          )}
-        </>
-      )}
+                ))}
+            {user.role === "admin" && (
+              <div className="w-full flex relative">
+                <input
+                  type="text"
+                  placeholder="enter your reply..."
+                  value={reviewReply}
+                  onChange={(e) => setReviewReply(e.target.value)}
+                  className="block 800px:ml-12 mt-2 outline-none text-black dark:text-white bg-transparent border-b dark:border-[#fff] border-[#000] p-[5px] w-[95%]"
+                />
+                <button
+                  type="submit"
+                  className={`absolute bottom-1 right-1 text-black dark:text-white ${
+                    reviewReply === "" || reviewReplyLoading
+                      ? "!cursor-not-allowed opacity-60"
+                      : "!cursor-pointer"
+                  }`}
+                  onClick={handleReviewReplySubmit}
+                  disabled={reviewReply === "" || reviewReplyLoading}
+                >
+                  {reviewReplyLoading ? "Submitting..." : "Submit"}
+                </button>
+              </div>
+            )}
+          </>
+        )}
     </div>
   );
 };
@@ -577,6 +591,7 @@ const CommentItem = ({
   answer,
   setAnswer,
   handleAnswerSubmit,
+  questionId,
   setQuestionId,
   answerLoading,
 }: any) => {
@@ -613,11 +628,13 @@ const CommentItem = ({
           <span
             className="800px:pl-16 cursor-pointer dark:text-[#ffffff83] text-[#000000bf] mr-2"
             onClick={() => {
-              setReplyActive(!replyActive);
+              setReplyActive(
+                questionId !== question?._id ? true : !replyActive
+              );
               setQuestionId(question?._id);
             }}
           >
-            {!replyActive
+            {!replyActive || questionId !== question?._id
               ? question?.questionReplies.length > 0
                 ? "View Replies"
                 : "Add Reply"
@@ -631,7 +648,7 @@ const CommentItem = ({
             {question?.questionReplies?.length}
           </span>
         </div>
-        {replyActive && (
+        {replyActive && questionId === question?._id && (
           <>
             {question?.questionReplies?.map((reply: any, index: number) => (
               <>
