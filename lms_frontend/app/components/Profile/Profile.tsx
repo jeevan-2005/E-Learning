@@ -1,10 +1,12 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import SideBarProfile from "./SideBarProfile";
 import { useLogoutQuery } from "../../../redux/features/auth/authApi";
 import { signOut } from "next-auth/react";
 import ProfileInfo from "./ProfileInfo";
 import ChangePassword from "./ChangePassword";
+import CourseCard from "../Course/CourseCard";
+import { useGetAllCoursesUserQuery } from "@/redux/features/course/courseApi";
 
 type Props = {
   user: any;
@@ -15,9 +17,19 @@ const Profile: FC<Props> = ({ user }) => {
   const [active, setActive] = useState(1);
   const [avatar, setAvatar] = useState(null);
   const [logout, setLogout] = useState(false);
+  const [courses, setCourses] = useState([]);
+  const {data, isLoading} = useGetAllCoursesUserQuery({})
+
   const {} = useLogoutQuery(undefined, {
     skip: !logout ? true : false,
   });
+
+  useEffect(() => {
+    if(data){
+      const filterCourses = user.courses.map((userCourse:any) => data?.allCourses.find((course:any) => course?._id === userCourse?._id));
+      setCourses(filterCourses);
+    }
+  },[data])
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
@@ -57,7 +69,22 @@ const Profile: FC<Props> = ({ user }) => {
       )}
       {active === 2 && (
         <div className="w-full h-full bg-transparent mt-[80px]">
-          <ChangePassword user={user} />
+          <ChangePassword />
+        </div>
+      )}
+      {active === 3 && (
+        <div className="w-full pl-7 800px:px-10 800px:pl-20 mt-[80px] px-2">
+          <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 lg:grid-cols-2 lg:gap-[25px] mb-12 border-0">
+            {courses &&
+              courses.map((course: any) => (
+                <CourseCard key={course._id} course={course} />
+              ))}
+          </div>
+          {courses && courses.length === 0 && (
+            <h1 className="text-center font-Poppins text-[25px] sm:text-3xl lg:text-4xl leading-[35px] dark:text-white text-black 800px:!leading-[60px] font-[700] tracking-tight">
+              You dont have any enrolled courses!
+            </h1>
+          )}
         </div>
       )}
     </div>
