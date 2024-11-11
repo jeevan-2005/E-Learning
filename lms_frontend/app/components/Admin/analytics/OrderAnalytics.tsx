@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { useGetOrderAnalyticsQuery } from "../../../../redux/features/analytics/analyticsApi";
 import Loader from "../../Loader/Loader";
 import {
