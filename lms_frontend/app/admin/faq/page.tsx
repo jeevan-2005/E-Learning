@@ -4,7 +4,7 @@ import AdminProtected from "../../hooks/adminProtected";
 import AdminSidebar from "../../components/Admin/sidebar/AdminSidebar";
 import DashboardHero from "../../components/Admin/DashboardHero";
 import Heading from "../../utils/Heading";
-import EditFaq from "../../components/Admin/customization/EditFaq.tsx";
+import EditFaq from "../../components/Admin/customization/EditFaq";
 
 type Props = {};
 
