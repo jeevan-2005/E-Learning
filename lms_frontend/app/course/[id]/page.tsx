@@ -1,15 +1,17 @@
-"use client"
-import React, { FC } from 'react'
+"use client";
+import React, { FC } from "react";
 import CourseDetailsPage from "../../components/Course/CourseDetailsPage";
 
-type Props = {}
+type Props = {
+  params: { id: string };
+};
 
-const Page:FC<Props> = ({params}) => {
+const Page: FC<Props> = ({ params }) => {
   return (
     <div>
-        <CourseDetailsPage id={params?.id} />
+      <CourseDetailsPage id={params?.id} />
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
