@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { useTheme } from "next-themes";
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
@@ -162,7 +162,7 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
             checkboxSelection={isDashboard ? false : true}
             rows={rows}
             columns={columns}
-            components={isDashboard ? {} : { Toolbar: GridToolbar }}
+            slots={isDashboard ? {} : { toolbar: GridToolbar }}
           />
         </Box>
       </Box>
