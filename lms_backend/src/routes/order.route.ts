@@ -1,5 +1,10 @@
 import express from "express";
-import { createOrder, getAllOrders } from "../controllers/order.controller";
+import {
+  createOrder,
+  getAllOrders,
+  getStripePublishableKey,
+  newPayment,
+} from "../controllers/order.controller";
 import { authorizeRoles, isAuth } from "../middlewares/auth";
 import { updateAccessToken } from "../controllers/user.controller";
 
@@ -13,5 +18,7 @@ orderRouter.get(
   authorizeRoles("admin"),
   getAllOrders
 );
+orderRouter.get("/payment/stripe-publishable-key", getStripePublishableKey);
+orderRouter.post("/payment", isAuth, newPayment);
 
 export default orderRouter;
