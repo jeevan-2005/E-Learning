@@ -4,6 +4,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { CircularProgress } from "@mui/material";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -26,7 +27,7 @@ const Verification: FC<Props> = ({ setRoute }) => {
   });
 
   const { token } = useSelector((state: any) => state.auth);
-  const [activation, { isSuccess, error }] = useActivationMutation();
+  const [activation, { isSuccess, error, isLoading }] = useActivationMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -103,8 +104,16 @@ const Verification: FC<Props> = ({ setRoute }) => {
       </div>
       <br />
       <br />
-      <button className={`${style.btn}`} onClick={verificationHandler}>
-        Verify OTP
+      <button
+        className={`${style.btn}`}
+        disabled={isLoading}
+        onClick={verificationHandler}
+      >
+        {isLoading ? (
+          <CircularProgress size={20} color="success" />
+        ) : (
+          "Verify-OTP"
+        )}
       </button>
       <br />
       <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
