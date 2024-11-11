@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Learning Activation Mail</title>
+    <style>
+        .email-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+        .email-header {
+            background-color: #0070f3;
+            color: #ffffff;
+            padding: 18px 24px;
+            font-size: 19px;
+            text-align: center;
+        }
+        .activation-code {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 10px;
+        }
+        .email-body {
+            padding: 24px;
+            font-size: 15px;
+            margin-bottom: 10px;
+            background-color: #ffffff;
+        }
+        .email-body p{
+            margin: 0;
+            padding: 2px;
+        }
+        .email-footer {
+            text-align: center;
+            background-color: #efeded;
+            margin-top: 10px;
+            padding: 3px 10px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="email-header">
+            <h1 class="email-heading">Welcome to E-Learning Platform</h1>
+        </div>
+        <div class="email-body">
+            <p>Hello <b><%= user.name %><b>,</p>
+            <p>Thank you for registering with us. To activate your account, please use the following activation code.</p>
+            <h1 class="activation-code"><%= activationCode %></h1>
+            <p>Please enter the code on the activation page. This code will expire in <b>5 minutes.</b></p>
+            <p>If you did not register with us, please ignore this email.</p>
+        </div>
+        <div class="email-footer">
+            <p>If you have any questions, please contact us at <a href="mailto:jeevanchoudhary2005@gmail.com">support@e-learning.com</a></p>
+        </div>
+    </div>
+</body>
+</html>
