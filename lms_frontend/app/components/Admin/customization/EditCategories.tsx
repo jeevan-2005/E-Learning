@@ -15,7 +15,6 @@ const EditCategories: FC<Props> = (props) => {
   const {
     data,
     isLoading: loadingData,
-    refetch,
   } = useGetHeroDataQuery("Categories", {
     refetchOnMountOrArgChange: true,
   });
