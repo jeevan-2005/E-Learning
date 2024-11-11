@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { useGetUserAnalyticsQuery } from "../../../../redux/features/analytics/analyticsApi";
 import { style } from "../../../styles/styles";
 import {
@@ -10,7 +10,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Loader from "../../Loader/Loader";
-import { Dashboard } from "@mui/icons-material";
 
 type Props = {
   isDashboard?: boolean;
