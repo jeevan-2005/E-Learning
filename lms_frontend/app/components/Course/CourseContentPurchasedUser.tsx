@@ -2,7 +2,7 @@ import {
   useGetPurchasedCourseDetialsQuery,
   useGetSingleCourseDetailsQuery,
 } from "../../../redux/features/course/courseApi";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import Loader from "../Loader/Loader";
 import Heading from "../../utils/Heading";
 import CourseContentMedia from "./CourseContentMedia";
