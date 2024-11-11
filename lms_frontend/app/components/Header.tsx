@@ -74,7 +74,7 @@ const Header: FC<Props> = ({ open, setOpen, activeItem, route, setRoute }) => {
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
-      if (window.scrollY > 50) {
+      if (window.scrollY > 85) {
         setActive(true);
       } else {
         setActive(false);
@@ -92,6 +92,9 @@ const Header: FC<Props> = ({ open, setOpen, activeItem, route, setRoute }) => {
 
   return (
     <div className="w-full relative">
+      {active && (
+        <div className="h-[80px]"></div>
+      )}
       <div
         className={`${
           active
