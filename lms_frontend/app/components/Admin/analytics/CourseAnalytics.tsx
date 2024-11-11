@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import {
   BarChart,
   Bar,
@@ -15,7 +15,7 @@ import { style } from "../../../styles/styles";
 type Props = {};
 
 const CourseAnalytics: FC<Props> = (props) => {
-  const { data, isLoading, error } = useGetCourseAnalyticsQuery({});
+  const { data, isLoading } = useGetCourseAnalyticsQuery({});
 
   const analyticsData: any = [];
   const minValue = 0;
