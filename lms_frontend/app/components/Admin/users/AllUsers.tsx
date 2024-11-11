@@ -11,8 +11,6 @@ import {
   useUpdateUserRoleMutation,
 } from "../../../../redux/features/user/userApi";
 import { style } from "../../../styles/styles";
-import AddNewUser from "./AddNewUser";
-import CustomModel from "@/app/utils/CustomModel";
 import toast from "react-hot-toast";
 
 type Props = {
