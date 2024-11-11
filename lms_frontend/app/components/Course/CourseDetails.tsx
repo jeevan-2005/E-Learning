@@ -11,6 +11,7 @@ import CheckoutForm from "../Payment/CheckoutForm";
 import avatarDefault from "../../../public/assests/avatar.webp";
 import Image from "next/image";
 import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
+import Loader from "../Loader/Loader";
 
 type Props = {
   setOpen: (open: boolean) => void;
@@ -48,13 +49,13 @@ const CourseDetails: React.FC<Props> = ({
   const handleOrder = () => {
     if (user) {
       setOpen(true);
-    }else{
+    } else {
       setRoute("Login");
       setOpenAuthModel(true);
     }
   };
 
-  // if (isLoading) return <Loader />;
+  if (isLoading) return <Loader />;
 
   return (
     <div className="w-[90%] m-auto py-5">
@@ -238,7 +239,12 @@ const CourseDetails: React.FC<Props> = ({
               <div className="w-full">
                 {stripePromise && clientSecret && (
                   <Elements stripe={stripePromise} options={{ clientSecret }}>
-                    <CheckoutForm setOpen={setOpen} course={course} user={user} refetch={refetch} />
+                    <CheckoutForm
+                      setOpen={setOpen}
+                      course={course}
+                      user={user}
+                      refetch={refetch}
+                    />
                   </Elements>
                 )}
               </div>
