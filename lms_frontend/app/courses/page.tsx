@@ -9,6 +9,7 @@ import Header from "../components/Header";
 import Heading from "../utils/Heading";
 import { style } from "../styles/styles";
 import CourseCard from "../components/Course/CourseCard";
+import Footer from "../components/Footer";
 
 type Props = {};
 
@@ -54,7 +55,7 @@ const Page = (props: Props) => {
   if (isLoading) return <Loader />;
 
   return (
-    <div>
+    <div className="min-h-screen">
       <Header
         open={open}
         setOpen={setOpen}
@@ -62,7 +63,7 @@ const Page = (props: Props) => {
         setRoute={setRoute}
         activeItem={1}
       />
-      <div className="w-[95%] 800px:w-[85%] m-auto min-h-screen">
+      <div className="w-[95%] 800px:w-[85%] m-auto">
         <Heading
           title={"All Courses - E-Learning"}
           description="E-Learning Platform for student to learn and get help with their courses from teachers."
@@ -110,6 +111,7 @@ const Page = (props: Props) => {
             ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
