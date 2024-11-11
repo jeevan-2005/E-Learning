@@ -48,31 +48,20 @@ const editCourse = catchAsyncError(
       const thumbnail = data?.thumbnail;
       const courseId = req.params.id;
       const course = await CourseModel.findById(courseId);
-      if (thumbnail) {
-        if (course?.thumbnail && (course?.thumbnail as Thumbnail)?.public_id) {
-          await cloudinary.v2.uploader.destroy(
-            (course.thumbnail as any).public_id
-          );
-          const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
-            folder: "courses",
-          });
 
-          data.thumbnail = {
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url,
-          };
-        } else {
-          const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
-            folder: "courses",
-          });
-
-          data.thumbnail = {
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url,
-          };
-        }
+      if (thumbnail.startsWith("https://res.cloudinary.com")) {
+        data.thumbnail = course?.thumbnail;
+      } else {
+        await cloudinary.v2.uploader.destroy((course?.thumbnail as { public_id: string }).public_id);
+        const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
+          folder: "courses",
+        });
+        data.thumbnail = {
+          public_id: myCloud.public_id,
+          url: myCloud.secure_url,
+        };
       }
-      console.log(1);
+
       const updatedCourse = await CourseModel.findByIdAndUpdate(
         courseId,
         {
@@ -81,7 +70,21 @@ const editCourse = catchAsyncError(
         {
           new: true,
         }
+      ).select(
+        "-courseData.videoUrl -courseData.links -courseData.suggestions -courseData.questions"
       );
+
+      const redisAllCourses = await redis.get("allCourses");
+      if (redisAllCourses) {
+        const allCourses = JSON.parse(redisAllCourses);
+        const newAllCourses = allCourses.map((course: any) => {
+          if (course._id.toString() === courseId) {
+            return updatedCourse;
+          }
+          return course;
+        });
+        await redis.set("allCourses", JSON.stringify(newAllCourses));
+      }
 
       res.status(201).json({
         success: true,
@@ -167,12 +170,12 @@ const getSingleCoursePaid = catchAsyncError(
         (course: any) => course._id.toString() === courseId
       );
 
-      if (!isCourseExistsInCourseList) {
+      if (!isCourseExistsInCourseList && req.user?.role !== "admin") {
         return next(
           new ErrorHandler("You are not authorized to access this content", 400)
         );
       }
-
+      
       const course = await CourseModel.findById(courseId);
       const courseContent = course?.courseData;
 
@@ -281,13 +284,14 @@ const addAnswer = catchAsyncError(
       const newAnswer: any = {
         user: req?.user,
         answer,
+        createdAt: new Date().toISOString(),
       };
       question?.questionReplies?.push(newAnswer);
       await course?.save();
 
       if (req?.user?._id?.toString() === question?.user?._id?.toString()) {
         await NotificationModel.create({
-          user: req.user?._id,
+          userId: req.user?._id,
           title: "New Question Reply Received",
           message: `You have new question reply in ${courseContent?.title} in the course:${course?.name}`,
         });
@@ -371,12 +375,33 @@ const addReview = catchAsyncError(
 
       await course?.save();
 
-      const notification: any = {
+      const updatedCourse = await CourseModel.findById(courseId).select(
+        "-courseData.videoUrl -courseData.links -courseData.suggestions -courseData.questions"
+      );
+      await redis.set(
+        courseId,
+        JSON.stringify(updatedCourse),
+        "EX",
+        7 * 60 * 60 * 24
+      ); // 7 days expires
+
+      const redisAllCourses = await redis.get("allCourses");
+      if (redisAllCourses) {
+        const allCourses = JSON.parse(redisAllCourses);
+        const newAllCourses = allCourses.map((course: any) => {
+          if (course._id.toString() === courseId) {
+            return updatedCourse;
+          }
+          return course;
+        });
+        await redis.set("allCourses", JSON.stringify(newAllCourses));
+      }
+
+      await NotificationModel.create({
+        userId: req?.user?._id,
         title: "New Course Review",
         message: `${req.user?.name} has given a review on the course ${course?.name}`,
-      };
-
-      // create a notification....
+      });
 
       res.status(200).json({
         success: true,
@@ -417,6 +442,8 @@ const addReviewReply = catchAsyncError(
       const replyData: any = {
         user: req?.user,
         comment: adminReply,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       if (!review?.commentReplies) {
         review.commentReplies = [];
@@ -425,6 +452,28 @@ const addReviewReply = catchAsyncError(
       review.commentReplies?.push(replyData);
 
       await course?.save();
+
+      const updatedCourse = await CourseModel.findById(courseId).select(
+        "-courseData.videoUrl -courseData.links -courseData.suggestions -courseData.questions"
+      );
+      await redis.set(
+        courseId,
+        JSON.stringify(updatedCourse),
+        "EX",
+        7 * 60 * 60 * 24
+      ); // 7 days expires
+
+      const redisAllCourses = await redis.get("allCourses");
+      if (redisAllCourses) {
+        const allCourses = JSON.parse(redisAllCourses);
+        const newAllCourses = allCourses.map((course: any) => {
+          if (course._id.toString() === courseId) {
+            return updatedCourse;
+          }
+          return course;
+        });
+        await redis.set("allCourses", JSON.stringify(newAllCourses));
+      }
 
       res.status(200).json({
         success: true,
