@@ -16,7 +16,6 @@ import {
   QuizIcon,
   WysiwygIcon,
   ManageHistoryIcon,
-  SettingsIcon,
   ExitToAppIcon,
 } from "./Icon";
 import { Menu, MenuItem, ProSidebar } from "react-pro-sidebar";
