@@ -6,21 +6,19 @@ import CourseData from "./CourseData";
 import CourseContent from "./CourseContent";
 import CoursePreview from "./CoursePreview";
 import {
-  useCreateCourseMutation,
   useEditCourseMutation,
   useGetAllCoursesQuery,
 } from "../../../../redux/features/course/courseApi";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 import Loader from "../../Loader/Loader";
-import { Category } from "@mui/icons-material";
 
 type Props = {
   id: string;
 };
 
 const EditCourse: FC<Props> = ({ id }) => {
-  const { isLoading, data, refetch } = useGetAllCoursesQuery(
+  const { isLoading, data } = useGetAllCoursesQuery(
     {},
     {
       refetchOnMountOrArgChange: true,
@@ -135,7 +133,7 @@ const EditCourse: FC<Props> = ({ id }) => {
     setCourseData(data);
   };
 
-  const handleCourseCreate = async (e: any) => {
+  const handleCourseCreate = async () => {
     const data = courseData;
     if (!isEditCourseLoading) {
         console.log(id, data);
