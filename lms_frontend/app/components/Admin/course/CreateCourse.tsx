@@ -99,7 +99,7 @@ const CreateCourse: FC<Props> = (props) => {
     setCourseData(data);
   };
 
-  const handleCourseCreate = async (e: any) => {
+  const handleCourseCreate = async () => {
     const data = courseData;
     if (!isLoading) {
       await createCourse(data);
