@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import avatarImage from "../../../public/assests/profileImg.jpg";
 import reviewImage from "../../../public/assests/training-course-banner.webp";
 import Image from "next/image";
