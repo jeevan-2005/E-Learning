@@ -19,24 +19,29 @@ type Props = {
 };
 
 const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
-  const { data, isLoading, refetch } = useGetAllNotificationsQuery(undefined, {
+  const { data, refetch } = useGetAllNotificationsQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
-  const [
-    updateNotificationStatus,
-    { isSuccess, isLoading: updateLoading, error },
-  ] = useUpdateNotificationStatusMutation();
+  const [updateNotificationStatus, { isSuccess }] =
+    useUpdateNotificationStatusMutation();
 
   const [notifications, setNotifications] = React.useState<any[]>();
 
-  const [audio] = useState(
-    new Audio(
-      "https://res.cloudinary.com/jeevan27/video/upload/v1731219484/preview_wyixxl.mp3"
-    )
-  );
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const audioInstance = new Audio(
+        "https://res.cloudinary.com/jeevan27/video/upload/v1731219484/preview_wyixxl.mp3"
+      );
+      setAudio(audioInstance);
+    }
+  }, []);
 
   const playerNotificationSound = () => {
-    audio.play();
+    if (audio && audio.readyState >= 3) {
+      audio.play();
+    }
   };
 
   useEffect(() => {
@@ -48,8 +53,10 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
     if (isSuccess) {
       refetch();
     }
-    audio.load();
-  }, [data, isSuccess]);
+    if (audio) {
+      audio.load();
+    }
+  }, [data, isSuccess, audio]);
 
   useEffect(() => {
     socketId.on("newNotification", (data) => {
@@ -58,7 +65,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
     });
   }, []);
 
-  const handleNotificationStatusChange = async (id) => {
+  const handleNotificationStatusChange = async (id: string) => {
     await updateNotificationStatus(id);
   };
 
@@ -79,13 +86,11 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
           <h5 className="text-black dark:text-white text-center text-[20px] p-3 font-Poppins">
             Notifications
           </h5>
-          {
-            notifications && notifications.length === 0 && (
-              <div className="w-full h-[35vh] flex items-center justify-center">
-                <p>No Notifications !!</p>
-              </div>
-            )
-          }
+          {notifications && notifications.length === 0 && (
+            <div className="w-full h-[35vh] flex items-center justify-center">
+              <p>No Notifications !!</p>
+            </div>
+          )}
           {notifications &&
             notifications.map((notification: any, index: number) => (
               <div
@@ -96,8 +101,11 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
                   <p className="text-black dark:text-white">
                     {notification?.title}
                   </p>
-                  <p className="dark:text-[#3ccba0] text-[#000000b3] cursor-pointer text-[12px]" 
-                    onClick={() => handleNotificationStatusChange(notification?._id)}
+                  <p
+                    className="dark:text-[#3ccba0] text-[#000000b3] cursor-pointer text-[12px]"
+                    onClick={() =>
+                      handleNotificationStatusChange(notification?._id)
+                    }
                   >
                     Mark as read
                   </p>
