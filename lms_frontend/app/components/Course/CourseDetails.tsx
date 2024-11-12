@@ -142,7 +142,7 @@ const CourseDetails: React.FC<Props> = ({
           </div>
           {course?.reviews &&
             [...course?.reviews].reverse().map((review: any, index: number) => (
-              <div className="w-full py-8" key={index}>
+              <div className="w-full py-2" key={index}>
                 <div className="flex">
                   <div>
                     <Image
