@@ -3,7 +3,7 @@
 import { useGetAllCoursesUserQuery } from "../../redux/features/course/courseApi";
 import { useGetHeroDataQuery } from "../../redux/features/layout/layoutApi";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Loader from "../components/Loader/Loader";
 import Header from "../components/Header";
 import Heading from "../utils/Heading";
@@ -116,4 +116,10 @@ const Page = (props: Props) => {
   );
 };
 
-export default Page;
+export default function SuspendedPage(props: Props) {
+  return (
+    <Suspense fallback={<Loader />}>
+      <Page {...props} />
+    </Suspense>
+  );
+}
