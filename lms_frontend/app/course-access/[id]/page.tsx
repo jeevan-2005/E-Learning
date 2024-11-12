@@ -16,7 +16,6 @@ const Page:FC<Props> = ({params}) => {
 
   useEffect(() => {
     if(data){
-      console.log(data);
       const isPurchased = data?.user?.courses.find((course: any) => course._id === id);
       if(data?.user?.role === "admin") return;
       if(!isPurchased){
