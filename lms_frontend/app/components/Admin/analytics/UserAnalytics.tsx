@@ -20,7 +20,6 @@ const UserAnalytics: FC<Props> = ({ isDashboard }) => {
   const analyticsData: any = [];
 
   if (data) {
-    console.log(data);
     data.users.last12Months.forEach((item: any) => {
       analyticsData.push({
         name: item.month,
