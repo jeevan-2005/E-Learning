@@ -28,6 +28,7 @@ const sendToken = async (user, res, statusCode) => {
     // only set secure to true in production
     if (process.env.NODE_ENV === "production") {
         exports.accessTokenOptions.secure = true;
+        exports.refreshTokenOptions.secure = true;
     }
     res.cookie("access_token", accessToken, exports.accessTokenOptions);
     res.cookie("refresh_token", refreshToken, exports.refreshTokenOptions);
