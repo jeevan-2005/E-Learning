@@ -9,6 +9,7 @@ import {
 import React, { FC, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import socketIO from "socket.io-client";
+import { CircularProgress } from "@mui/material";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
 const socketId = socketIO(ENDPOINT, {
@@ -77,8 +78,17 @@ const CheckoutForm: FC<Props> = ({ setOpen, course, user, refetch }) => {
           id="submit"
           className="w-[50%]"
         >
-          <span id="button-text" className={`${style.btn} my-2 !h-[35px]`}>
-            {isLoading ? "Paying..." : "Pay now"}
+          <span
+            id="button-text"
+            className={`${style.btn} my-2 !h-[35px] ${
+              isLoading && "!opacity-50 !cursor-not-allowed"
+            }`}
+          >
+            {isLoading ? (
+              <CircularProgress size={20} color="success" />
+            ) : (
+              "Pay now"
+            )}
           </span>
         </button>
       </div>
