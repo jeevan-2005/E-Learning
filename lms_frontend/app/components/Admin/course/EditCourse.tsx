@@ -136,7 +136,6 @@ const EditCourse: FC<Props> = ({ id }) => {
   const handleCourseCreate = async () => {
     const data = courseData;
     if (!isEditCourseLoading) {
-        console.log(id, data);
       await editCourse({ id, data });
     }
   };
