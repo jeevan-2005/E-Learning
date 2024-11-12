@@ -27,7 +27,7 @@ const schema = Yup.object().shape({
   password: Yup.string().required("Please enter your password!").min(6),
 });
 
-const Login: FC<Props> = ({ setRoute, setOpen , refetch}) => {
+const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
   const [show, setShow] = useState(false);
   const [login, { error, isSuccess, data, isLoading }] = useLoginMutation();
 
@@ -115,7 +115,13 @@ const Login: FC<Props> = ({ setRoute, setOpen , refetch}) => {
           <span className="text-red-500 pt-1 block">{errors.password}</span>
         )}
         <div className="w-full mt-8">
-          <button type="submit" className={`${style.btn}`} disabled={isLoading}>
+          <button
+            type="submit"
+            className={`${style.btn}  ${
+              isLoading && "!opacity-50 !cursor-not-allowed"
+            }`}
+            disabled={isLoading}
+          >
             {isLoading ? (
               <CircularProgress size={20} color="success" />
             ) : (

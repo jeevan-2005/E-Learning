@@ -132,7 +132,13 @@ const SignUp: FC<Props> = ({ setRoute }) => {
           <span className="text-red-500 pt-1 block">{errors.password}</span>
         )}
         <div className="w-full mt-8">
-          <button type="submit" className={`${style.btn}`} disabled={isLoading}>
+          <button
+            type="submit"
+            className={`${style.btn}  ${
+              isLoading && "!opacity-50 !cursor-not-allowed"
+            }`}
+            disabled={isLoading}
+          >
             {isLoading ? (
               <CircularProgress size={20} color="success" />
             ) : (

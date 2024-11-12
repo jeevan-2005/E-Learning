@@ -105,7 +105,9 @@ const Verification: FC<Props> = ({ setRoute }) => {
       <br />
       <br />
       <button
-        className={`${style.btn}`}
+        className={`${style.btn}  ${
+          isLoading && "!opacity-50 !cursor-not-allowed"
+        }`}
         disabled={isLoading}
         onClick={verificationHandler}
       >
