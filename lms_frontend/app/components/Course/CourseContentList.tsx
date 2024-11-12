@@ -58,7 +58,7 @@ const CourseContentList: FC<Props> = ({
         const sectionContentHours: number = sectionVideoLength / 60;
 
         return (
-          <div className={`border-b border-[#ffffff39] py-2`} key={section}>
+          <div className={`border-b dark:border-[#ffffff39] border-[#0000001e]  py-2`} key={section}>
             <div className="w-full flex">
               <div className="w-full flex items-center justify-between">
                 <h2 className="text-black dark:text-white text-[22px]">
