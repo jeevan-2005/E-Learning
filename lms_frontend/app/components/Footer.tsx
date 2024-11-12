@@ -79,20 +79,11 @@ const Footer: FC<Props> = (props) => {
               <ul className="space-y-4">
                 <li>
                   <Link
-                    href={"/"}
+                    href={"https://www.linkedin.com/in/jeevan27/"}
                     target="_blank"
                     className="text-base text-black dark:text-gray-300 dark:hover:text-white"
                   >
-                    Youtube
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href={"/"}
-                    target="_blank"
-                    className="text-base text-black dark:text-gray-300 dark:hover:text-white"
-                  >
-                    Instagram
+                    Linkedin
                   </Link>
                 </li>
                 <li>
@@ -102,6 +93,15 @@ const Footer: FC<Props> = (props) => {
                     className="text-base text-black dark:text-gray-300 dark:hover:text-white"
                   >
                     Github
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={"/https://x.com/Jeevan_Ch27"}
+                    target="_blank"
+                    className="text-base text-black dark:text-gray-300 dark:hover:text-white"
+                  >
+                    Twitter
                   </Link>
                 </li>
               </ul>
