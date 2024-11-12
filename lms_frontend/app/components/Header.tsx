@@ -87,7 +87,7 @@ const Header: FC<Props> = ({ open, setOpen, activeItem, route, setRoute }) => {
       setOpenSidebar(false);
     }
   };
-  console.log(data, userData);
+  
   if (isLoading || socialLoading) return <Loader />;
 
   return (
