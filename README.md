@@ -6,7 +6,7 @@ An E-Learning site for students to browse, purchase, and learn various courses. 
 
 The E-Learning platform allows students to explore a variety of courses, buy them, and access a full library of video lectures for learning. Students can also interact with instructors by asking questions on specific videos, leave course reviews, and access their purchased courses at any time. The platform offers secure payment options, authentication via Google, GitHub, or email, and includes an admin dashboard for course and user management.
 
-[Deployed Link](#) <!-- Add your deployed link here -->
+[Deployed Link](https://e-learning-lms-ten.vercel.app/) <!-- Add your deployed link here -->
 
 ## Features
 
