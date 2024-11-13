@@ -26,10 +26,14 @@ The E-Learning platform allows students to explore a variety of courses, buy the
 
 Include screenshots for the following:
 - **Home Page**
+  ![Screenshot 2024-11-13 165135](https://github.com/user-attachments/assets/4492337b-5f00-4721-a802-d929c01ac433)
 - **Course Page**
+  ![Screenshot 2024-11-13 165203](https://github.com/user-attachments/assets/7c3ff1fe-903b-412b-9459-8684c8efefdc)
 - **Purchased Course Page**
+  ![Screenshot 2024-11-13 165458](https://github.com/user-attachments/assets/e73f95d1-8ad4-4401-afdc-6e86048c27c9)
 - **Admin Dashboard**
-
+  ![Screenshot 2024-11-13 165348](https://github.com/user-attachments/assets/7aad4ebe-beaa-42f1-bb6c-bd19fce682cc)
+  
 ## Tech Stack
 
 - **Frontend**: Next.js, Redux Toolkit, NextAuth for authentication
