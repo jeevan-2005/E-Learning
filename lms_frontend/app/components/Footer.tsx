@@ -97,7 +97,7 @@ const Footer: FC<Props> = (props) => {
                 </li>
                 <li>
                   <Link
-                    href={"/https://x.com/Jeevan_Ch27"}
+                    href={"https://x.com/Jeevan_Ch27"}
                     target="_blank"
                     className="text-base text-black dark:text-gray-300 dark:hover:text-white"
                   >
