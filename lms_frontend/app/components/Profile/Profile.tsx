@@ -1,7 +1,9 @@
 "use client";
 import React, { FC, useEffect, useState } from "react";
 import SideBarProfile from "./SideBarProfile";
-import { useLogoutQuery } from "../../../redux/features/auth/authApi";
+import {
+  useLogoutMutation,
+} from "../../../redux/features/auth/authApi";
 import { signOut } from "next-auth/react";
 import ProfileInfo from "./ProfileInfo";
 import ChangePassword from "./ChangePassword";
@@ -16,20 +18,19 @@ const Profile: FC<Props> = ({ user }) => {
   const [scroll, setScroll] = useState(false);
   const [active, setActive] = useState(1);
   const [avatar, setAvatar] = useState(null);
-  const [logout, setLogout] = useState(false);
   const [courses, setCourses] = useState([]);
-  const {data, isLoading} = useGetAllCoursesUserQuery({})
+  const { data, isLoading } = useGetAllCoursesUserQuery({});
 
-  const {} = useLogoutQuery(undefined, {
-    skip: !logout ? true : false,
-  });
+  const [logout] = useLogoutMutation({});
 
   useEffect(() => {
-    if(data){
-      const filterCourses = user.courses.map((userCourse:any) => data?.allCourses.find((course:any) => course?._id === userCourse?._id));
+    if (data) {
+      const filterCourses = user.courses.map((userCourse: any) =>
+        data?.allCourses.find((course: any) => course?._id === userCourse?._id)
+      );
       setCourses(filterCourses);
     }
-  },[data])
+  }, [data]);
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
@@ -42,9 +43,12 @@ const Profile: FC<Props> = ({ user }) => {
   }
 
   const logoutHandler = async () => {
-    setLogout(true);
-    // when we call signout it gies page reload so we call setlogout before signout so that logout query executes and session after that is deleted using signout().
-    await signOut();
+    try {
+      await logout(undefined);
+      await signOut();
+    } catch (error) {
+      console.log("Logout failed", error);
+    }
   };
 
   return (
