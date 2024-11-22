@@ -22,6 +22,21 @@ The E-Learning platform allows students to explore a variety of courses, buy the
   - Display charts and graphs for users, courses, etc.
   - Receive notifications for key platform activities
 
+## Admin Login Credentials
+
+To access the admin dashboard and explore its features, use the following credentials:
+
+- **Email**: `admin@gmail.com`
+- **Password**: `123456`
+
+#### Navigation
+
+1. Log in using the credentials above.
+2. Click on the **Profile** menu in the navigation bar.
+3. Select **Admin Dashboard** from the dropdown.
+
+Feel free to log in and test the admin functionalities, including managing courses, users, and responding to student queries.
+
 ## Screenshots
 
 Include screenshots for the following:
