@@ -195,7 +195,7 @@ const CourseDetails: React.FC<Props> = ({
             </h4>
           </div>
           <div className="flex items-center">
-            {isPurchased || user?.role === "admin" ? (
+            {isPurchased || user?.role === "admin" || course?.price === 0 ? (
               <Link
                 className={`${style.btn} !w-[180px] my-3 font-Poppins cursor-pointer !bg-[crimson]`}
                 href={`/course-access/${course?._id}`}
