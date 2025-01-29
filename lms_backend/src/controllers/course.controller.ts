@@ -184,7 +184,7 @@ const getSingleCoursePaid = catchAsyncError(
         courseContent,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(new ErrorHandler("get-course-content-error", 500));
     }
   }
 );
