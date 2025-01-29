@@ -12,6 +12,7 @@ import avatarDefault from "../../../public/assests/avatar.webp";
 import Image from "next/image";
 import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
 import Loader from "../Loader/Loader";
+import { useRouter } from "next/navigation";
 
 type Props = {
   setOpen: (open: boolean) => void;
@@ -46,8 +47,14 @@ const CourseDetails: React.FC<Props> = ({
   const isPurchased =
     user && user?.courses?.find((item: any) => item._id === course._id);
 
+  const router = useRouter();
+
   const handleOrder = () => {
     if (user) {
+      if(course?.price === 0){
+        router.push(`/course-access/${course?._id}`)
+        return;
+      }
       setOpen(true);
     } else {
       setRoute("Login");
@@ -195,7 +202,7 @@ const CourseDetails: React.FC<Props> = ({
             </h4>
           </div>
           <div className="flex items-center">
-            {isPurchased || user?.role === "admin" || course?.price === 0 ? (
+            {isPurchased || user?.role === "admin" ? (
               <Link
                 className={`${style.btn} !w-[180px] my-3 font-Poppins cursor-pointer !bg-[crimson]`}
                 href={`/course-access/${course?._id}`}
