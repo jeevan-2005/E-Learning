@@ -170,13 +170,12 @@ const getSingleCoursePaid = catchAsyncError(
       const isCourseExistsInCourseList = courseList?.find(
         (course: any) => course._id.toString() === courseId
       );
-      console.log(course)
     
-      // if (!isCourseExistsInCourseList && req.user?.role !== "admin" && course?.price !== 0) {
-      //   return next(
-      //     new ErrorHandler("You are not authorized to access this content", 400)
-      //   );
-      // }
+      if (!isCourseExistsInCourseList && req.user?.role !== "admin" && course?.price !== 0) {
+        return next(
+          new ErrorHandler("You are not authorized to access this content", 400)
+        );
+      }
       
       const courseContent = course?.courseData;
 
