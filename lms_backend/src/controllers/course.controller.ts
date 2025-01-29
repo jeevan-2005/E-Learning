@@ -169,14 +169,14 @@ const getSingleCoursePaid = catchAsyncError(
       const isCourseExistsInCourseList = courseList?.find(
         (course: any) => course._id.toString() === courseId
       );
+      const course = await CourseModel.findById(courseId);
 
-      if (!isCourseExistsInCourseList && req.user?.role !== "admin") {
+      if (!isCourseExistsInCourseList && req.user?.role !== "admin" && course?.price !== 0) {
         return next(
           new ErrorHandler("You are not authorized to access this content", 400)
         );
       }
       
-      const course = await CourseModel.findById(courseId);
       const courseContent = course?.courseData;
 
       res.status(201).json({
