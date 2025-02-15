@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "type": "commonjs",
-  "main": "build/server.js",
+  "main": "dist/server.js",
   "engines": {
     "node": "22.x"
   },
