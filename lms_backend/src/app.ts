@@ -22,8 +22,8 @@ app.use(cookieParser());
 // cors
 app.use(
   cors({
-    origin: ["https://e-learning-lms-ten.vercel.app"],
-    credentials: true,
+    origin: "https://e-learning-lms-ten.vercel.app",
+    // credentials: true,
   })
 );
 
